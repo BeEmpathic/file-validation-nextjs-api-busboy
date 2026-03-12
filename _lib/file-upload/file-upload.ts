@@ -17,7 +17,7 @@ export async function fileUpload(files: File[]) {
       formData.append("files", file);
     });
 
-    const response = await fetch("/api/test", {
+    const response = await fetch("/api/file-upload", {
       method: "POST",
       body: formData,
     });
