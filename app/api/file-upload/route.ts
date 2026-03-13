@@ -22,6 +22,8 @@ export async function POST(req: Request) {
       },
     });
 
+    let limitReached = false;
+
     bb.on("file", (name, file, info) => {
       const { filename, encoding, mimeType } = info;
       console.log(`File field name: ${name}`);
@@ -35,11 +37,33 @@ export async function POST(req: Request) {
       );
 
       const writeStream = fs.createWriteStream(saveTo);
+
+      writeStream.on("error", (err) => {
+        console.error("Error while saving the file / writeStream error", err);
+      });
+
+      file.on("limit", () => {
+        limitReached = true;
+        writeStream.destroy();
+      });
+
+      writeStream.on("close", () => {
+        if (limitReached) {
+          fs.unlink(saveTo, (err) => {
+            if (err) console.error("Error while deleting partial files:", err);
+            else console.log("Partail file should be deleted:", saveTo);
+          });
+        }
+      });
+
+      writeStream.on("error", (err) => {
+        console.error("File write error", err);
+      });
+
       file.pipe(writeStream);
     });
 
     bb.on("close", () => {
-      console.log("I'm in the promise");
       const response = new Response(
         JSON.stringify({ message: "Closed without an error I guess" }),
       );
@@ -51,14 +75,12 @@ export async function POST(req: Request) {
       reject(err);
     });
 
-    bb.on("limit", (limit) => {
-      console.log(limit);
-      reject(new Response(JSON.stringify({ message: "You hit a limit!" })));
+    bb.on("limit", () => {
+      limitReached = true;
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);
     nodeStream.pipe(bb);
-    //return new Response(JSON.stringify({ message: "File size too big" }), {
   });
 }
 
