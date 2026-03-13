@@ -7,53 +7,111 @@ import { Readable } from "node:stream";
 import { v4 } from "uuid";
 
 export async function POST(req: Request) {
-  // the values so I don't have to look for them in code
-  const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "images");
   const MAX_FILE_AMOUNT = 25;
-  const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-  // check if the content isn't too big I should set it to the file size summed I guess not the size of one file, but I leave it like this for testing
-  // reading headers suppose to not be bad I will check that
-  const contentLength = req.headers.get("content-length");
-  if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE * 1.1) {
-    return new Response(JSON.stringify({ message: "File size too big" }), {
-      status: 413,
+  const MAX_FILE_SIZE = 1 * 1024 * 1024;
+  console.log("Got the requiest !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  return new Promise<Response>((resolve, reject) => {
+    const headers = Object.fromEntries(req.headers);
+    const bb = busboy({
+      headers,
+      limits: {
+        fileSize: MAX_FILE_SIZE,
+        fields: 4,
+        files: 1,
+        parts: 5,
+      },
     });
-  }
-  // remember to make the folder with commends later lazy bastard
-  //  fs.mkdir(UPLOAD_DIR, { recursive: true })
 
-  if (!fs.existsSync(UPLOAD_DIR)) {
-    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-  }
+    bb.on("file", (name, file, info) => {
+      const { filename, encoding, mimeType } = info;
+      console.log(`File field name: ${name}`);
 
-  const headers = Object.fromEntries(req.headers);
+      const saveTo = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "images",
+        `${v4()}-${filename}`,
+      );
 
-  const bb = busboy({
-    headers: headers,
-    limits: {
-      fileSize: MAX_FILE_SIZE,
-      files: MAX_FILE_AMOUNT,
-    },
+      const writeStream = fs.createWriteStream(saveTo);
+      file.pipe(writeStream);
+    });
+
+    bb.on("close", () => {
+      console.log("I'm in the promise");
+      const response = new Response(
+        JSON.stringify({ message: "Closed without an error I guess" }),
+      );
+      resolve(response);
+    });
+
+    bb.on("error", (err) => {
+      console.error("error");
+      reject(err);
+    });
+
+    bb.on("limit", (limit) => {
+      console.log(limit);
+      reject(new Response(JSON.stringify({ message: "You hit a limit!" })));
+    });
+
+    const nodeStream = Readable.fromWeb(req.body as any);
+    nodeStream.pipe(bb);
+    //return new Response(JSON.stringify({ message: "File size too big" }), {
   });
-  bb.on("file", (name, file, info) => {
-    console.log(name);
-    console.log(info);
-    console.log(file);
-  });
-  bb.on("close", () => {
-    return new Response(
-      JSON.stringify({
-        message: "SUccess, but you didn't do the file save yet",
-      }),
-    );
-  });
-
-  const nodeStream = Readable.fromWeb(req.body as any);
-
-  nodeStream.on("error", () => nodeStream.destroy());
-
-  nodeStream.pipe(bb);
-
-  return;
 }
+
+//   console.log(
+//     "Start of a new request !@@#@#!#!@#@!#!##!@#!@#!##!#@!#@!#!@#!@#*&#@!(*#&!(@*#&(!*@#&!@#(*",
+//   );
+//   // the values so I don't have to look for them in code
+//   const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "images");
+//   const MAX_FILE_AMOUNT = 25;
+//   const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+//   // check if the content isn't too big I should set it to the file size summed I guess not the size of one file, but I leave it like this for testing
+//   // reading headers suppose to not be bad I will check that
+//   const contentLength = req.headers.get("content-length");
+//   if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE * 1.1) {
+//     return new Response(JSON.stringify({ message: "File size too big" }), {
+//       status: 413,
+//     });
+//   }
+//   // remember to make the folder with commends later lazy bastard
+//   //  fs.mkdir(UPLOAD_DIR, { recursive: true })
+
+//   if (!fs.existsSync(UPLOAD_DIR)) {
+//     fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+//   }
+
+//   const headers = Object.fromEntries(req.headers);
+
+//   const bb = busboy({
+//     headers: headers,
+//     limits: {
+//       fileSize: MAX_FILE_SIZE,
+//       files: MAX_FILE_AMOUNT,
+//     },
+//   });
+//   bb.on("file", (name, file, info) => {
+//     console.log(name);
+//     console.log(info);
+//     console.log(file);
+//   });
+//   bb.on("close", () => {
+//     return new Response(
+//       JSON.stringify({
+//         message: "SUccess, but you didn't do the file save yet",
+//       }),
+//     );
+//   });
+
+//   const nodeStream = Readable.fromWeb(req.body as any);
+
+//   nodeStream.on("error", () => nodeStream.destroy());
+
+//   nodeStream.pipe(bb);
+
+//   return;
+// }
