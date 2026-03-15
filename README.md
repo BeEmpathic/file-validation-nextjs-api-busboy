@@ -1,8 +1,5 @@
 # File validation busboy
 
-## Conclusion
-You should just use multer. Multer just simply do what you would code the busboy into do in it. So just skip the work and use multer. It's not heavy etc. 
-
 ## To run project:
 
 ###  1. Install:
@@ -14,5 +11,5 @@ after cloning in side the unpacked folder with the porject run:
 npm run dev
 ```
 
-## The project isn't finished
-I didn't finish it cause It wasn't worth it cause multer appeared as better solution than coding it by myself.
+## The project isn't finished yet
+I thought about using multer, but I think It might suck I don't understand why multer asks you for file or fields when I want it to validate my file if it isn't to big so for now i will stick to the busboy
