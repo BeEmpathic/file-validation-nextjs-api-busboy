@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         resolve(
           new Response(
             JSON.stringify({
-              message: "Too large file",
+              error: "Too large file",
             }),
             {
               status: 413,
@@ -67,7 +67,6 @@ export async function POST(req: Request) {
     });
 
     bb.on("close", () => {
-      console.log("bb on close!");
       const response = new Response(
         JSON.stringify({ message: responseMessage }),
       );
@@ -76,14 +75,6 @@ export async function POST(req: Request) {
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);
-
-    let bytesRead = 0;
-    nodeStream.on("data", (chunk) => {
-      bytesRead += chunk.length;
-      console.log(
-        `Server read ${(bytesRead / 1024 / 1024).toFixed(2)} MB so far`,
-      );
-    });
 
     nodeStream.pipe(bb);
     return;

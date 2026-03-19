@@ -42,6 +42,7 @@ export async function fileUpload(files: File[]) {
 
     // there is type of any on error check if you can do something about it.
   } catch (e: any) {
+    console.log("error happened");
     console.error(e);
     result.message = ["Something went wrong! We got unusual error"];
     result.error = e;
