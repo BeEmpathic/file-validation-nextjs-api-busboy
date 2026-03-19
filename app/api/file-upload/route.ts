@@ -23,8 +23,6 @@ export async function POST(req: Request) {
       },
     });
 
-    let limitReached = false;
-
     bb.on("file", (name, file, info) => {
       const { filename, encoding, mimeType } = info;
       console.log(`File field name: ${name}`);
@@ -49,11 +47,16 @@ export async function POST(req: Request) {
         fs.unlink(saveTo, (err) => {
           console.error("error while deleting the file", err);
         });
+        nodeStream.unpipe(bb);
         resolve(
           new Response(
             JSON.stringify({
               message: "Too large file",
             }),
+            {
+              status: 413,
+              headers: { Connection: "close" },
+            },
           ),
         );
       });
@@ -64,10 +67,7 @@ export async function POST(req: Request) {
     });
 
     bb.on("close", () => {
-      if (limitReached) {
-        responseMessage = "Too large file";
-      }
-
+      console.log("bb on close!");
       const response = new Response(
         JSON.stringify({ message: responseMessage }),
       );
@@ -76,6 +76,15 @@ export async function POST(req: Request) {
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);
+
+    let bytesRead = 0;
+    nodeStream.on("data", (chunk) => {
+      bytesRead += chunk.length;
+      console.log(
+        `Server read ${(bytesRead / 1024 / 1024).toFixed(2)} MB so far`,
+      );
+    });
+
     nodeStream.pipe(bb);
     return;
   });
