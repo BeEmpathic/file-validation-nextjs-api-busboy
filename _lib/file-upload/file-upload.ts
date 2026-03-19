@@ -36,6 +36,7 @@ export async function fileUpload(files: File[]) {
     // this overwrites entier resultat you should do it wiht const instead of let somehow
     result = await response.json();
     // The response retruned to the user
+    console.log("result instant after parsing: ", result);
 
     return result;
 

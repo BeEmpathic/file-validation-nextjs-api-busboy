@@ -23,9 +23,9 @@ export default function Page() {
     event.preventDefault();
     const response = await fileUpload(files);
     setResult(response);
-    console.log("The result", result);
+    console.log("The result: ", result);
 
-    console.log("Result message:", result.message);
+    console.log("Result message: ", result.message);
 
     console.log(files);
   }

@@ -9,8 +9,8 @@ import { v4 } from "uuid";
 export async function POST(req: Request) {
   const MAX_FILE_AMOUNT = 25;
   const MAX_FILE_SIZE = 1 * 1024 * 1024;
-  let responseMessage = "Your file is supposedly saved";
-  let response = new Response(JSON.stringify(responseMessage));
+  let responseMessage = "Initial respone";
+
   return new Promise<Response>((resolve, reject) => {
     const headers = Object.fromEntries(req.headers);
     const bb = busboy({
@@ -44,20 +44,23 @@ export async function POST(req: Request) {
       });
 
       file.on("limit", () => {
+        console.log("File limit hit!");
         writeStream.end();
         fs.unlink(saveTo, (err) => {
-          console.error("error while deleting the file");
+          console.error("error while deleting the file", err);
         });
-        return;
+        resolve(
+          new Response(
+            JSON.stringify({
+              message: "Too large file",
+            }),
+          ),
+        );
       });
 
       file.pipe(writeStream);
 
       return;
-    });
-
-    bb.on("limit", () => {
-      bb.destroy();
     });
 
     bb.on("close", () => {
@@ -74,7 +77,6 @@ export async function POST(req: Request) {
 
     const nodeStream = Readable.fromWeb(req.body as any);
     nodeStream.pipe(bb);
-
-    return resolve(response);
+    return;
   });
 }
