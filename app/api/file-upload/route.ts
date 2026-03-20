@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 export async function POST(req: Request) {
   const MAX_FILE_AMOUNT = 25;
   const MAX_FILE_SIZE = 1 * 1024 * 1024;
-  let responseMessage = "Initial respone";
+  let responseMessage = "Everything done correctly / no error fired";
 
   return new Promise<Response>((resolve, reject) => {
     const headers = Object.fromEntries(req.headers);
@@ -17,10 +17,20 @@ export async function POST(req: Request) {
       headers,
       limits: {
         fileSize: MAX_FILE_SIZE,
-        fields: 4,
-        files: 1,
+        fields: 1,
+        files: 3,
         parts: 5,
       },
+    });
+
+    bb.on("filesLimit", () => {
+      nodeStream.unpipe(bb);
+      resolve(
+        new Response(JSON.stringify({ message: "Too many files max is 20" }), {
+          status: 400,
+          headers: { Connection: "close" },
+        }),
+      );
     });
 
     bb.on("file", (name, file, info) => {
@@ -42,12 +52,16 @@ export async function POST(req: Request) {
       });
 
       file.on("limit", () => {
-        console.log("File limit hit!");
+        console.log("File size limit hit!");
+
+        // the logic when the limit is hit
         writeStream.end();
         fs.unlink(saveTo, (err) => {
-          console.error("error while deleting the file", err);
+          if (err) console.error("error while deleting the file", err);
         });
         nodeStream.unpipe(bb);
+
+        // resolving the promise
         resolve(
           new Response(
             JSON.stringify({
@@ -64,6 +78,16 @@ export async function POST(req: Request) {
       file.pipe(writeStream);
 
       return;
+    });
+
+    bb.on("error", (err) => {
+      nodeStream.unpipe(bb);
+      resolve(
+        new Response(JSON.stringify({ error: "Invalid multipart data" }), {
+          status: 400,
+          headers: { Connection: "close" },
+        }),
+      );
     });
 
     bb.on("close", () => {
