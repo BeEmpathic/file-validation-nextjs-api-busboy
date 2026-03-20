@@ -6,7 +6,11 @@ export default function Page() {
   // make it so it's just an property / object on the result
   //  containing the messsage which is array of strings
   // instead of this what you have now
-  const initialResult = { message: ["No files send yet"], success: true };
+  const initialResult = {
+    message: ["No files send yet"],
+    success: true,
+    error: "",
+  };
 
   const [result, setResult] = useState(initialResult);
   const [files, setFiles] = useState<File[]>([]);
@@ -39,7 +43,11 @@ export default function Page() {
 
       {
         <div id="result">
-          {result.message}
+          {result
+            ? result.success === true
+              ? result.message
+              : result.error
+            : "No files send yet"}
           {/* {Object.keys(result).length > 0 ? (
             result.map((obj) => <p key={index}>{message}</p>)
           ) : (
