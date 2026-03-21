@@ -8,8 +8,8 @@ export default function Page() {
   // instead of this what you have now
   const initialResult = {
     message: ["No files send yet"],
-    success: true,
     error: "",
+    success: true,
   };
 
   const [result, setResult] = useState(initialResult);
@@ -43,11 +43,7 @@ export default function Page() {
 
       {
         <div id="result">
-          {result
-            ? result.success === true
-              ? result.message
-              : result.error
-            : "No files send yet"}
+          {result ? result.message : "No files send yet"}
           {/* {Object.keys(result).length > 0 ? (
             result.map((obj) => <p key={index}>{message}</p>)
           ) : (
