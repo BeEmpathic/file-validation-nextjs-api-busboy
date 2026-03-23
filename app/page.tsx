@@ -7,9 +7,9 @@ export default function Page() {
   //  containing the messsage which is array of strings
   // instead of this what you have now
   const initialResult = {
+    success: true,
     message: ["No files send yet"],
     error: "",
-    success: true,
   };
 
   const [result, setResult] = useState(initialResult);
