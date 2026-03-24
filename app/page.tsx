@@ -35,22 +35,24 @@ export default function Page() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <input type="file" multiple name="files" onChange={handleFilesChange} />
-      <button className="cursor-pointer border-solid" type="submit">
-        Submit
-      </button>
+    <div className="border">
+      <form onSubmit={onSubmit}>
+        <input type="file" multiple name="files" onChange={handleFilesChange} />
+        <button className="cursor-pointer border-solid" type="submit">
+          Submit
+        </button>
 
-      {
-        <div id="result">
-          {result ? result.message : "No files send yet"}
-          {/* {Object.keys(result).length > 0 ? (
+        {
+          <div id="result">
+            {result ? result.message : "No files send yet"}
+            {/* {Object.keys(result).length > 0 ? (
             result.map((obj) => <p key={index}>{message}</p>)
-          ) : (
-            <p>No files added yet</p>
-          )} */}
-        </div>
-      }
-    </form>
+            ) : (
+              <p>No files added yet</p>
+              )} */}
+          </div>
+        }
+      </form>
+    </div>
   );
 }
