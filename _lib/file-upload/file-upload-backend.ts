@@ -9,6 +9,7 @@ export async function headerContentLengthCheck(
   contentLength: string | null,
   MAX_TOTAL_UPLOAD = 5 * 20 * 1024 * 1024,
 ) {
+  console.log(MAX_TOTAL_UPLOAD);
   if (!contentLength) return false;
 
   const bytes = Number(contentLength);
@@ -26,6 +27,7 @@ export async function busboyFilesHandler(
     files: 10,
   },
 ) {
+  console.log(limits);
   return new Promise((resolve, reject) => {
     const headers = Object.fromEntries(req.headers);
     const bb = busboy({

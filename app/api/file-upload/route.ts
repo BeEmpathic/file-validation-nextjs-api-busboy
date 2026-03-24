@@ -12,15 +12,22 @@ import {
 } from "@/_lib/file-upload/file-upload-backend";
 
 export async function POST(req: NextRequest) {
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  const MAX_AMOUNT_FILES = 20;
+  const MAX_REQUEST_SIZE = 20 * 5 * 1024 * 1024;
   const limits = {
-    MAX_FILE_AMOUNT: 20,
-    MAX_FILE_SIZE: 5 * 1024 * 1024,
-    MAX_TOTAL_UPLOAD: 5 * 20 * 1024 * 1024,
+    files: MAX_AMOUNT_FILES,
+    fileSize: MAX_FILE_SIZE,
   };
 
   let responseMessage = "Everything done correctly / no error fired";
 
-  if (!(await headerContentLengthCheck(req.headers.get("content-length"))))
+  if (
+    !(await headerContentLengthCheck(
+      req.headers.get("content-length"),
+      MAX_REQUEST_SIZE,
+    ))
+  )
     return Response.json(
       {
         message: "Too big content or broken content",
@@ -31,7 +38,7 @@ export async function POST(req: NextRequest) {
       },
     );
 
-  const filesSaved = await busboyFilesHandler(req);
+  const filesSaved = await busboyFilesHandler(req, limits) as { pass: boolean };
 
   if (!filesSaved.pass) {
     return Response.json({
