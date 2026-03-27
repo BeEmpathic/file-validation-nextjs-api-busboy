@@ -1,4 +1,4 @@
-import busboy from "busboy";
+import busboy, { Busboy } from "busboy";
 import { Readable } from "node:stream";
 
 import fs, { write } from "node:fs";
@@ -20,6 +20,8 @@ export async function headerContentLengthCheck(
   return true;
 }
 
+async function fileCleanup() {}
+
 export async function busboyFilesHandler(
   req: Request,
   limits = {
@@ -27,19 +29,28 @@ export async function busboyFilesHandler(
     files: 10,
   },
 ) {
-  console.log(limits);
-  return new Promise((resolve, reject) => {
-    const headers = Object.fromEntries(req.headers);
-    const bb = busboy({
+  const uploadedFiles: string[] = [];
+  let bb: Busboy;
+  const returnedInfo = {
+    pass: false,
+    message: "",
+    status: 500,
+    error: "",
+  };
+
+  const headers = Object.fromEntries(req.headers);
+
+  try {
+    bb = busboy({
       headers,
       limits: limits,
     });
-    const returnedInfo = {
-      pass: false,
-      message: "",
-      status: 500,
-      error: "",
-    };
+  } catch (err) {
+    console.error("Busboy creation error: ", err);
+    return returnedInfo;
+  }
+
+  return new Promise((resolve, reject) => {
     // check if there isn't too many files
     bb.on("filesLimit", () => {
       nodeStream.unpipe(bb);

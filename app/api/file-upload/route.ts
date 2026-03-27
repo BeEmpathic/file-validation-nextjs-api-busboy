@@ -20,8 +20,6 @@ export async function POST(req: NextRequest) {
     fileSize: MAX_FILE_SIZE,
   };
 
-  let responseMessage = "Everything done correctly / no error fired";
-
   if (
     !(await headerContentLengthCheck(
       req.headers.get("content-length"),
@@ -38,7 +36,9 @@ export async function POST(req: NextRequest) {
       },
     );
 
-  const filesSaved = await busboyFilesHandler(req, limits) as { pass: boolean };
+  const filesSaved = (await busboyFilesHandler(req, limits)) as {
+    pass: boolean;
+  };
 
   if (!filesSaved.pass) {
     return Response.json({
