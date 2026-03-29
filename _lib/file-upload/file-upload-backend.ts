@@ -20,8 +20,6 @@ export async function headerContentLengthCheck(
   return true;
 }
 
-async function fileCleanup() {}
-
 export async function busboyFilesHandler(
   req: Request,
   limits = {
@@ -29,7 +27,10 @@ export async function busboyFilesHandler(
     files: 10,
   },
 ) {
-  const uploadedFiles: string[] = [];
+  //paths to the files
+  const uploadedFilesPaths: string[] = [];
+  const uploadedFilesNames: string[] = [];
+
   let bb: Busboy;
   const returnedInfo = {
     pass: false,
@@ -53,9 +54,16 @@ export async function busboyFilesHandler(
   return new Promise((resolve, reject) => {
     // check if there isn't too many files
     bb.on("filesLimit", () => {
+      console.warn("Too many files");
       nodeStream.unpipe(bb);
       returnedInfo.pass = false;
       returnedInfo.error = "Too many files";
+      uploadedFilesPaths.forEach((filePath) => {
+        fs.unlink(filePath, (err) => {
+          console.error("Error while deleting the file:", err);
+        });
+      });
+      reject(returnedInfo);
     });
 
     // checks every file and if it isn't too big it saves it to the hard drive
@@ -68,6 +76,10 @@ export async function busboyFilesHandler(
         `${v4()}-${info.filename}`,
       );
 
+      uploadedFilesPaths.push(saveTo);
+      uploadedFilesNames.push(info.filename);
+
+      // the write stream is here
       const writeStream = fs.createWriteStream(saveTo);
 
       writeStream.on("error", (err) => {
@@ -76,13 +88,20 @@ export async function busboyFilesHandler(
         returnedInfo.pass = false;
         returnedInfo.error =
           "Error while saving the file on writeStream, it's a huge problem with the server";
+        uploadedFilesPaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            console.error("Error while deleting the file:", err);
+          });
+        });
         reject(returnedInfo);
       });
 
       file.on("limit", () => {
         writeStream.end();
-        fs.unlink(saveTo, (err) => {
-          if (err) console.error("error while deleting the file", err);
+        uploadedFilesPaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            console.error("Error while deleting the file:", err);
+          });
         });
         // for some reason you still need this line,
         //  so remember that I might prevent memory leaks or something
@@ -102,13 +121,29 @@ export async function busboyFilesHandler(
         reject(returnedInfo);
       });
 
+      file.on("error", async (err) => {
+        console.error("File stream error:", err);
+        uploadedFilesPaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            console.error("Error while deleting the file:", err);
+          });
+        });
+        reject(returnedInfo);
+      });
+
       file.pipe(writeStream);
     });
 
     bb.on("error", (err) => {
+      console.log("busboy error happened");
       nodeStream.unpipe(bb);
       returnedInfo.pass = false;
       returnedInfo.error = `Unusual error in Busboy: ${err}`;
+      uploadedFilesPaths.forEach((filePath) => {
+        fs.unlink(filePath, (err) => {
+          console.error("Error while deleting the file:", err);
+        });
+      });
       reject(returnedInfo);
     });
 
@@ -120,9 +155,27 @@ export async function busboyFilesHandler(
         returnedInfo.status = 201;
         resolve(returnedInfo);
       }
+      uploadedFilesPaths.forEach((filePath) => {
+        fs.unlink(filePath, (err) => {
+          console.error("Error while deleting the file:", err);
+        });
+      });
+      reject(returnedInfo);
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);
+
+    nodeStream.on("close", async () => {
+      console.log("Nodestream closed");
+      if (!returnedInfo.pass && !returnedInfo.error) {
+        console.log("Node stream closed unexpectedly (possible abort)");
+        uploadedFilesPaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            console.error("Error while deleting the file:", err);
+          });
+        });
+      }
+    });
 
     nodeStream.pipe(bb);
   });
