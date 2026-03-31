@@ -9,7 +9,6 @@ export async function headerContentLengthCheck(
   contentLength: string | null,
   MAX_TOTAL_UPLOAD = 5 * 20 * 1024 * 1024,
 ) {
-  console.log(MAX_TOTAL_UPLOAD);
   if (!contentLength) return false;
 
   const bytes = Number(contentLength);
@@ -165,6 +164,17 @@ export async function busboyFilesHandler(
 
     const nodeStream = Readable.fromWeb(req.body as any);
 
+    req.signal.aborted;
+
+    req.signal.addEventListener("abort", () => {
+      console.log(
+        "client aborted and we know about it and we can do something about it",
+      );
+    });
+
+    if (req.signal.aborted) {
+    }
+
     nodeStream.on("close", async () => {
       console.log("Nodestream closed");
       if (!returnedInfo.pass && !returnedInfo.error) {
@@ -176,7 +186,6 @@ export async function busboyFilesHandler(
         });
       }
     });
-
     nodeStream.pipe(bb);
   });
 }
