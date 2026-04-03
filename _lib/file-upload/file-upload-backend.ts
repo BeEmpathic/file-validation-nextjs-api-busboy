@@ -170,6 +170,13 @@ export async function busboyFilesHandler(
       console.log(
         "client aborted and we know about it and we can do something about it",
       );
+      uploadedFilesPaths.forEach((filePath) => {
+        fs.unlink(filePath, (err) => {
+          console.error("Error while deleting the file:", err);
+        });
+      });
+      nodeStream.unpipe(bb);
+      reject(returnedInfo);
     });
 
     if (req.signal.aborted) {
