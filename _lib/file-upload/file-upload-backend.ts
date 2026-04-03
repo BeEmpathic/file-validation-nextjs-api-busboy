@@ -1,6 +1,5 @@
 import busboy, { Busboy } from "busboy";
 import { Readable } from "node:stream";
-
 import fs, { write } from "node:fs";
 import path from "node:path";
 import { v4 } from "uuid";
@@ -35,7 +34,7 @@ export async function busboyFilesHandler(
     pass: false,
     message: "",
     status: 500,
-    error: "",
+    error: "Server error",
   };
 
   const headers = Object.fromEntries(req.headers);
@@ -51,18 +50,26 @@ export async function busboyFilesHandler(
   }
 
   return new Promise((resolve, reject) => {
+    function returnError(error: string) {
+      if (nodeStream) {
+        nodeStream.unpipe(bb);
+      }
+      if (uploadedFilesPaths.length > 0) {
+        uploadedFilesPaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            if (err) console.error("Error while deleting the file:", err);
+          });
+        });
+      }
+
+      returnedInfo.pass = false;
+      returnedInfo.error = error;
+      reject(returnedInfo);
+    }
     // check if there isn't too many files
     bb.on("filesLimit", () => {
       console.warn("Too many files");
-      nodeStream.unpipe(bb);
-      returnedInfo.pass = false;
-      returnedInfo.error = "Too many files";
-      uploadedFilesPaths.forEach((filePath) => {
-        fs.unlink(filePath, (err) => {
-          console.error("Error while deleting the file:", err);
-        });
-      });
-      reject(returnedInfo);
+      returnError("Too many files");
     });
 
     // checks every file and if it isn't too big it saves it to the hard drive
@@ -82,26 +89,14 @@ export async function busboyFilesHandler(
       const writeStream = fs.createWriteStream(saveTo);
 
       writeStream.on("error", (err) => {
-        console.error("Error while saving the file");
-
-        returnedInfo.pass = false;
-        returnedInfo.error =
-          "Error while saving the file on writeStream, it's a huge problem with the server";
-        uploadedFilesPaths.forEach((filePath) => {
-          fs.unlink(filePath, (err) => {
-            console.error("Error while deleting the file:", err);
-          });
-        });
-        reject(returnedInfo);
+        console.error("Error while saving the file", err);
+        returnError(
+          "Error while saving the file on writeStream, it's a huge problem with the server",
+        );
       });
 
       file.on("limit", () => {
         writeStream.end();
-        uploadedFilesPaths.forEach((filePath) => {
-          fs.unlink(filePath, (err) => {
-            console.error("Error while deleting the file:", err);
-          });
-        });
         // for some reason you still need this line,
         //  so remember that I might prevent memory leaks or something
         // this line sucks it makes you consume the whole request
@@ -113,86 +108,50 @@ export async function busboyFilesHandler(
         // and I hope that it's enough
         file.resume();
 
-        nodeStream.unpipe(bb);
-        returnedInfo.pass = false;
-        returnedInfo.error = `Too large file ${info.filename}`;
-        returnedInfo.status = 413;
-        reject(returnedInfo);
+        returnError(`Too large file ${info.filename}`);
       });
 
       file.on("error", async (err) => {
         console.error("File stream error:", err);
-        uploadedFilesPaths.forEach((filePath) => {
-          fs.unlink(filePath, (err) => {
-            console.error("Error while deleting the file:", err);
-          });
-        });
-        reject(returnedInfo);
+        returnError(`File stream error ${err}`);
       });
 
+      // piping the file stream to the write stream
       file.pipe(writeStream);
     });
 
     bb.on("error", (err) => {
       console.log("busboy error happened");
-      nodeStream.unpipe(bb);
-      returnedInfo.pass = false;
-      returnedInfo.error = `Unusual error in Busboy: ${err}`;
-      uploadedFilesPaths.forEach((filePath) => {
-        fs.unlink(filePath, (err) => {
-          console.error("Error while deleting the file:", err);
-        });
-      });
-      reject(returnedInfo);
+      returnError(`Unusual error in Busboy: ${err}`);
     });
 
     bb.on("close", () => {
       console.log("bb closed!");
+
+      // technically this doesn't matter cause I should reject the promise before it gets here but okay I gonna leave it for now
       if (!returnedInfo.error) {
         returnedInfo.pass = true;
         returnedInfo.message = "No errors accured, files should be saved";
         returnedInfo.status = 201;
         resolve(returnedInfo);
       }
-      uploadedFilesPaths.forEach((filePath) => {
-        fs.unlink(filePath, (err) => {
-          console.error("Error while deleting the file:", err);
-        });
-      });
+      returnError("Unexpected error for which I didn't account for");
       reject(returnedInfo);
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);
 
-    req.signal.aborted;
-
     req.signal.addEventListener("abort", () => {
       console.log(
         "client aborted and we know about it and we can do something about it",
       );
-      uploadedFilesPaths.forEach((filePath) => {
-        fs.unlink(filePath, (err) => {
-          console.error("Error while deleting the file:", err);
-        });
-      });
-      nodeStream.unpipe(bb);
-      reject(returnedInfo);
+      returnError("Aborted request");
     });
 
     if (req.signal.aborted) {
     }
 
-    nodeStream.on("close", async () => {
-      console.log("Nodestream closed");
-      if (!returnedInfo.pass && !returnedInfo.error) {
-        console.log("Node stream closed unexpectedly (possible abort)");
-        uploadedFilesPaths.forEach((filePath) => {
-          fs.unlink(filePath, (err) => {
-            console.error("Error while deleting the file:", err);
-          });
-        });
-      }
-    });
+    // the pipe of the request stream to the busboy
     nodeStream.pipe(bb);
   });
 }
