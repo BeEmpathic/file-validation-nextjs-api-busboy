@@ -135,15 +135,13 @@ export async function busboyFilesHandler(
       console.log("bb closed!");
 
       // technically this doesn't matter cause I should reject the promise before it gets here but okay I gonna leave it for now
-      if (!returnedInfo.error) {
-        returnedInfo.pass = true;
-        returnedInfo.message = "No errors accured, files should be saved";
-        returnedInfo.status = 201;
-        returnedInfo.uploadedFilesNames = uploadedFilesNames;
-        resolve(returnedInfo);
-      }
-      returnError("Unexpected error for which I didn't account for");
-      reject(returnedInfo);
+
+      returnedInfo.pass = true;
+      returnedInfo.message = "No errors accured, files should be saved";
+      returnedInfo.status = 201;
+      returnedInfo.uploadedFilesNames = uploadedFilesNames;
+      returnedInfo.error = "";
+      resolve(returnedInfo);
     });
 
     const nodeStream = Readable.fromWeb(req.body as any);

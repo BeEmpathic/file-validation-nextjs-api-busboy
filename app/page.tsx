@@ -16,10 +16,10 @@ export default function Page() {
   };
   const initialResult: returnedInfoType = {
     pass: false,
-    message: "",
+    message: "No files selected",
     status: 400,
     uploadedFilesNames: [],
-    error: "No files selected",
+    error: "",
   };
 
   const [result, setResult] = useState(initialResult);
@@ -52,16 +52,13 @@ export default function Page() {
           Submit
         </button>
 
-        {
-          <div id="result">
-            {result ? result.message : "No files send yet"}
-            {/* {Object.keys(result).length > 0 ? (
-            result.map((obj) => <p key={index}>{message}</p>)
-            ) : (
-              <p>No files added yet</p>
-              )} */}
-          </div>
-        }
+        <div id="result">
+          {result.error ? (
+            <div className="text-red-500">{result.error}</div>
+          ) : (
+            result.message
+          )}
+        </div>
       </form>
     </div>
   );
