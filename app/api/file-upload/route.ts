@@ -1,11 +1,7 @@
 "use server";
 
 import { NextRequest } from "next/server";
-import busboy from "busboy";
-import fs from "node:fs";
-import path from "node:path";
-import { Readable } from "node:stream";
-import { v4 } from "uuid";
+
 import {
   busboyFilesHandler,
   headerContentLengthCheck,
@@ -37,19 +33,21 @@ export async function POST(req: NextRequest) {
         },
       );
 
-    const result = (await busboyFilesHandler(req, limits)) as {
+    type returnedInfoType = {
       pass: boolean;
+      message: string;
+      status: number;
+      uploadedFilesNames: string[];
+      error: string;
     };
 
+    const result = (await busboyFilesHandler(req, limits)) as returnedInfoType;
+
     if (!result.pass) {
-      return Response.json({
-        success: false,
-        message: "",
-        error: "Server Error, not your fault ;-;",
-      });
+      return Response.json(result);
     }
 
-    return Response.json({ success: true, message: "Everything is fine" });
+    return Response.json(result);
   } catch (error) {
     return Response.json({
       success: false,

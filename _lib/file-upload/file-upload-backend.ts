@@ -30,10 +30,20 @@ export async function busboyFilesHandler(
   const uploadedFilesNames: string[] = [];
 
   let bb: Busboy;
-  const returnedInfo = {
+
+  type returnedInfoType = {
+    pass: boolean;
+    message: string;
+    status: number;
+    uploadedFilesNames: string[];
+    error: string;
+  };
+
+  const returnedInfo: returnedInfoType = {
     pass: false,
     message: "",
     status: 500,
+    uploadedFilesNames: [],
     error: "Server error",
   };
 
@@ -133,6 +143,7 @@ export async function busboyFilesHandler(
         returnedInfo.pass = true;
         returnedInfo.message = "No errors accured, files should be saved";
         returnedInfo.status = 201;
+        returnedInfo.uploadedFilesNames = uploadedFilesNames;
         resolve(returnedInfo);
       }
       returnError("Unexpected error for which I didn't account for");
