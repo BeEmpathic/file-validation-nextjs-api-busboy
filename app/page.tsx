@@ -6,10 +6,20 @@ export default function Page() {
   // make it so it's just an property / object on the result
   //  containing the messsage which is array of strings
   // instead of this what you have now
-  const initialResult = {
-    success: true,
-    message: ["No files send yet"],
-    error: "",
+
+  type returnedInfoType = {
+    pass: boolean;
+    message: string;
+    status: number;
+    uploadedFilesNames: string[];
+    error: string;
+  };
+  const initialResult: returnedInfoType = {
+    pass: false,
+    message: "",
+    status: 400,
+    uploadedFilesNames: [],
+    error: "No files selected",
   };
 
   const [result, setResult] = useState(initialResult);
@@ -25,7 +35,7 @@ export default function Page() {
 
   async function onSubmit(event: any) {
     event.preventDefault();
-    const response = await fileUpload(files);
+    const response: returnedInfoType = await fileUpload(files);
     setResult(response);
     console.log("The result: ", result);
 

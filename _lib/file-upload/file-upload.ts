@@ -1,14 +1,16 @@
+import { returnedInfoType } from "@/_types/fileUploadTypes";
+
 export async function fileUpload(files: File[]) {
-  let result: {
-    message: string[] | undefined;
-    success: boolean;
-  } = {
-    message: ["Empty result, something wen't wrong!"],
-    success: false,
+  let result: returnedInfoType = {
+    pass: false,
+    message: "",
+    status: 400,
+    uploadedFilesNames: [],
+    error: "No files selected",
   };
 
   if (files.length === 0) {
-    result.message = ["No files detected something is off"];
+    result.error = "No files selected";
 
     return result;
   }
@@ -33,6 +35,8 @@ export async function fileUpload(files: File[]) {
 
     result = await response.json();
 
+    console.log(result);
+
     // this overwrites entier resultat you should do it wiht const instead of let somehow
     // The response retruned to the user
     return result;
@@ -41,11 +45,10 @@ export async function fileUpload(files: File[]) {
   } catch (e: any) {
     console.log("error happened: ");
     console.error(e);
-    result.message = [
-      "Something went wrong! We got unusual error. Probably server",
-    ];
+    result.error =
+      "Something went wrong! We got unusual error. Probably server";
 
-    result.success = false;
+    result.pass = false;
     return result;
   }
 }

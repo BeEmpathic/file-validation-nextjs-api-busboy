@@ -3,6 +3,7 @@ import { Readable } from "node:stream";
 import fs, { write } from "node:fs";
 import path from "node:path";
 import { v4 } from "uuid";
+import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 export async function headerContentLengthCheck(
   contentLength: string | null,
@@ -30,14 +31,6 @@ export async function busboyFilesHandler(
   const uploadedFilesNames: string[] = [];
 
   let bb: Busboy;
-
-  type returnedInfoType = {
-    pass: boolean;
-    message: string;
-    status: number;
-    uploadedFilesNames: string[];
-    error: string;
-  };
 
   const returnedInfo: returnedInfoType = {
     pass: false,
@@ -105,6 +98,9 @@ export async function busboyFilesHandler(
         );
       });
 
+      // Important!!!!!!!!!
+      // you don't reject everything instantly if one file is too big,
+      //  not a big of a deal but you should be aware of it
       file.on("limit", () => {
         writeStream.end();
         // for some reason you still need this line,
