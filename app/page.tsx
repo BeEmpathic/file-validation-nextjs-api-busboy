@@ -58,6 +58,14 @@ export default function Page() {
           ) : (
             result.message
           )}
+
+          {result.uploadedFilesNames
+            ? result.uploadedFilesNames.map(
+                (fileName: string, index: number) => (
+                  <div key={index}>{fileName} Uploaded successfully</div>
+                ),
+              )
+            : null}
         </div>
       </form>
     </div>
