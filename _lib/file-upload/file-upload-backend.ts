@@ -112,7 +112,9 @@ export async function busboyFilesHandler(
         // normally in next.js
         // but I go with connection close header in response
         // and I hope that it's enough
-        file.resume();
+        // file.resume();
+        // Now we swap the file.resume(); to file.destory() so it destroies the file stream instead of consuming it
+        file.destroy();
 
         returnError(`Too large file ${info.filename}`);
       });
