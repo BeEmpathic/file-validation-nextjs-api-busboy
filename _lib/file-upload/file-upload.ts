@@ -1,6 +1,17 @@
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
+function checkFile(file: File) {
+  if (file.size > 5 * 1024 * 1024) {
+    return false;
+  }
+  if (!file.type.startsWith("image") || !file.type.startsWith("video")) {
+    return false;
+  }
+  return true;
+}
+
 export async function fileUpload(files: File[]) {
+  const rejectedFiles: string[] = [];
   let result: returnedInfoType = {
     pass: false,
     message: "",
@@ -12,6 +23,16 @@ export async function fileUpload(files: File[]) {
   if (files.length === 0) {
     result.error = "No files selected";
 
+    return result;
+  }
+
+  files.forEach((file) => {
+    if (!checkFile(file)) {
+      rejectedFiles.push(file.name);
+    }
+  });
+  if (rejectedFiles.length > 0) {
+    result.uploadedFilesNames = rejectedFiles;
     return result;
   }
 

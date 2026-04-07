@@ -8,7 +8,7 @@ import {
 } from "@/_lib/file-upload/file-upload-backend";
 
 export async function POST(req: NextRequest) {
-  const MAX_FILE_SIZE = 1 * 1024 * 1024;
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
   const MAX_AMOUNT_FILES = 20;
   const MAX_REQUEST_SIZE = 5 * 15 * 1024 * 1024;
   const limits = {
