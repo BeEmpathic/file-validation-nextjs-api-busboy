@@ -1,5 +1,7 @@
 "use server";
 
+import { returnedInfoType } from "@/_types/fileUploadTypes";
+
 import { NextRequest } from "next/server";
 
 import {
@@ -32,14 +34,6 @@ export async function POST(req: NextRequest) {
           status: 413,
         },
       );
-
-    type returnedInfoType = {
-      pass: boolean;
-      message: string;
-      status: number;
-      uploadedFilesNames: string[];
-      error: string;
-    };
 
     const result = (await busboyFilesHandler(req, limits)) as returnedInfoType;
 

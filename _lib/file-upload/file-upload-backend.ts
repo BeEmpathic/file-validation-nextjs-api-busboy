@@ -37,6 +37,7 @@ export async function busboyFilesHandler(
     message: "",
     status: 500,
     uploadedFilesNames: [],
+    rejectedFiles: [],
     error: "Server error",
   };
 

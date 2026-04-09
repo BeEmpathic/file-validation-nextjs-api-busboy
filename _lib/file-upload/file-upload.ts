@@ -17,6 +17,7 @@ export async function fileUpload(files: File[]) {
     message: "",
     status: 400,
     uploadedFilesNames: [],
+    rejectedFiles: [],
     error: "No files selected",
   };
 
@@ -33,6 +34,7 @@ export async function fileUpload(files: File[]) {
   });
   if (rejectedFiles.length > 0) {
     result.uploadedFilesNames = rejectedFiles;
+    result.pass = false;
     return result;
   }
 

@@ -1,5 +1,6 @@
 "use client";
 import { fileUpload } from "@/_lib/file-upload/file-upload";
+import { returnedInfoType } from "@/_types/fileUploadTypes";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
@@ -7,18 +8,12 @@ export default function Page() {
   //  containing the messsage which is array of strings
   // instead of this what you have now
 
-  type returnedInfoType = {
-    pass: boolean;
-    message: string;
-    status: number;
-    uploadedFilesNames: string[];
-    error: string;
-  };
   const initialResult: returnedInfoType = {
     pass: false,
     message: "No files selected",
     status: 400,
     uploadedFilesNames: [],
+    rejectedFiles: [],
     error: "",
   };
 
@@ -66,6 +61,7 @@ export default function Page() {
                 ),
               )
             : null}
+          {}
         </div>
       </form>
     </div>
