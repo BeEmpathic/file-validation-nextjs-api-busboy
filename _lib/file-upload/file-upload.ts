@@ -1,13 +1,20 @@
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
-function checkFile(file: File) {
+function checkFile(file: File): {
+  fileName: string;
+  reason: string;
+} | null {
   if (file.size > 5 * 1024 * 1024) {
-    return false;
+    return { fileName: file.name, reason: "Is too large only 5MB allowed" };
   }
   if (!file.type.startsWith("image") || !file.type.startsWith("video")) {
-    return false;
+    return {
+      fileName: file.name,
+      reason:
+        "It isn't an image or video, wrong file type only png, jpg, mp4 itp.",
+    };
   }
-  return true;
+  return null;
 }
 
 export async function fileUpload(files: File[]) {
@@ -28,9 +35,7 @@ export async function fileUpload(files: File[]) {
   }
 
   files.forEach((file) => {
-    if (!checkFile(file)) {
-      rejectedFiles.push(file.name);
-    }
+    rejectedFiles.push(checkFile(file));
   });
   if (rejectedFiles.length > 0) {
     result.uploadedFilesNames = rejectedFiles;
