@@ -9,11 +9,12 @@ function checkFile(file: File):
   if (file.size > 5 * 1024 * 1024) {
     return { fileName: file.name, reason: "Is too large only 5MB allowed" };
   }
-  if (!file.type.startsWith("image") || !file.type.startsWith("video")) {
+  console.log(file.type);
+  if (!file.type.startsWith("image") && !file.type.startsWith("video")) {
     return {
       fileName: file.name,
       reason:
-        "It isn't an image or video, wrong file type only png, jpg, mp4 itp.",
+        "It isn't an image or video, wrong file type only png, jpg, mp4 etc.",
     };
   }
   return true;
@@ -21,14 +22,13 @@ function checkFile(file: File):
 
 export async function fileUpload(files: File[]) {
   let result: returnedInfoType = {
-    pass: false,
-    message: "",
+    pass: true,
+    message: "Something is wrong",
     status: 400,
     uploadedFilesNames: [],
     rejectedFiles: [],
-    error: "No files selected",
+    error: "",
   };
-  console.log("Files in the fileupload function", files);
   if (files.length === 0) {
     console.log(files);
     result.error = "No files selected!";
