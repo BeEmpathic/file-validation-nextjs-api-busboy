@@ -1,26 +1,37 @@
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
-function checkFile(file: File):
+function checkFile(
+  file: File,
+  sizeLimit: number = 5 * 1024 * 1024,
+  onlyMedia: boolean = false,
+):
   | {
       fileName: string;
       reason: string;
     }
   | true {
-  if (file.size > 5 * 1024 * 1024) {
-    return { fileName: file.name, reason: "Is too large only 5MB allowed" };
-  }
-  console.log(file.type);
-  if (!file.type.startsWith("image") && !file.type.startsWith("video")) {
+  if (file.size > sizeLimit) {
     return {
       fileName: file.name,
-      reason:
-        "It isn't an image or video, wrong file type only png, jpg, mp4 etc.",
+      reason: `Is too large only ${sizeLimit} allowed`,
     };
   }
+  if (onlyMedia) {
+    if (!file.type.startsWith("image") && !file.type.startsWith("video")) {
+      return {
+        fileName: file.name,
+        reason:
+          "It isn't an image or video, wrong file type only png, jpg, mp4 etc.",
+      };
+    }
+  }
+
   return true;
 }
 
 export async function fileUpload(files: File[]) {
+  const sizeLimit: number = 5 * 1024 * 1024;
+  const onlyMedia: boolean = true;
   let result: returnedInfoType = {
     pass: true,
     message: "Something is wrong",
@@ -39,7 +50,7 @@ export async function fileUpload(files: File[]) {
   try {
     const formData = new FormData();
     files.forEach((file) => {
-      const validation = checkFile(file);
+      const validation = checkFile(file, sizeLimit, onlyMedia);
       if (validation === true) {
         formData.append("files", file);
       } else {
