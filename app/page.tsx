@@ -30,13 +30,12 @@ export default function Page() {
 
   async function onSubmit(event: any) {
     event.preventDefault();
+    console.log(files);
     const response: returnedInfoType = await fileUpload(files);
     setResult(response);
     console.log("The result: ", result);
 
     console.log("Result message: ", result.message);
-
-    console.log(files);
   }
 
   return (
@@ -53,6 +52,13 @@ export default function Page() {
           ) : (
             result.message
           )}
+          {result.rejectedFiles
+            ? result.rejectedFiles.map((rejectedFile, index: number) => (
+                <div className="text-red-500" key={index}>
+                  {rejectedFile.fileName} {rejectedFile.reason}
+                </div>
+              ))
+            : null}
 
           {result.uploadedFilesNames
             ? result.uploadedFilesNames.map(
