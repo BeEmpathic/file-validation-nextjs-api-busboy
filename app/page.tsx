@@ -1,5 +1,5 @@
 "use client";
-import { fileUpload } from "@/_lib/file-upload/file-upload";
+import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 import { ChangeEvent, FormEvent, useState } from "react";
 
