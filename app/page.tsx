@@ -5,8 +5,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
   // make it so it's just an property / object on the result
-  //  containing the messsage which is array of strings
-  // instead of this what you have now
 
   const initialResult: returnedInfoType = {
     pass: false,
@@ -32,16 +30,13 @@ export default function Page() {
     const fileSizeLimit: number = 5 * 1024 * 1024;
     const onlyMedia: boolean = true;
     event.preventDefault();
-    console.log(files);
+
     const response: returnedInfoType = await fileUpload(
       files,
       fileSizeLimit,
       onlyMedia,
     );
     setResult(response);
-    console.log("The result: ", result);
-
-    console.log("Result message: ", result.message);
   }
 
   return (

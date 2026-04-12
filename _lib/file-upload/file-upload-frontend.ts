@@ -43,7 +43,6 @@ export async function fileUpload(
     error: "",
   };
   if (files.length === 0) {
-    console.log(files);
     result.error = "No files selected!";
 
     return result;
@@ -72,16 +71,12 @@ export async function fileUpload(
     });
 
     if (!response.ok) {
-      console.log("Response not ok check", response);
       return result;
     }
 
-    console.log("Raw response:", response);
     // this overwrites entier resultat you should do it wiht const instead of let somehow
     // The response retruned to the user
     result = await response.json();
-
-    console.log(result);
 
     return result;
 

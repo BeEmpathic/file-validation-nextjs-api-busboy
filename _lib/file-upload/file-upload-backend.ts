@@ -135,8 +135,6 @@ export async function busboyFilesHandler(
     });
 
     bb.on("close", () => {
-      console.log("bb closed!");
-
       // technically this doesn't matter cause I should reject the promise before it gets here but okay I gonna leave it for now
 
       returnedInfo.pass = true;
@@ -150,9 +148,6 @@ export async function busboyFilesHandler(
     const nodeStream = Readable.fromWeb(req.body as any);
 
     req.signal.addEventListener("abort", () => {
-      console.log(
-        "client aborted and we know about it and we can do something about it",
-      );
       returnError("Aborted request");
     });
 
