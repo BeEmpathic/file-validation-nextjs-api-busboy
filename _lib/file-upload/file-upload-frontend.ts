@@ -31,9 +31,9 @@ function checkFile(
 
 export async function fileUpload(
   files: File[],
+  filesAmount: number = 20,
   fileSizeLimit: number = 5 * 1024 * 1024,
   onlyMedia: boolean = false,
-  filesAmount: number = 20,
 ) {
   let result: returnedInfoType = {
     pass: true,
@@ -49,9 +49,9 @@ export async function fileUpload(
 
     return result;
   }
-  if (files.length < filesAmount) {
+  if (files.length > filesAmount) {
     result.pass = false;
-    result.error = "Too many files";
+    result.error = "Too many files!";
   }
 
   try {
