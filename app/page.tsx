@@ -29,9 +29,15 @@ export default function Page() {
   }
 
   async function onSubmit(event: any) {
+    const fileSizeLimit: number = 5 * 1024 * 1024;
+    const onlyMedia: boolean = true;
     event.preventDefault();
     console.log(files);
-    const response: returnedInfoType = await fileUpload(files);
+    const response: returnedInfoType = await fileUpload(
+      files,
+      fileSizeLimit,
+      onlyMedia,
+    );
     setResult(response);
     console.log("The result: ", result);
 

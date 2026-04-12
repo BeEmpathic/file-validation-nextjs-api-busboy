@@ -2,7 +2,7 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 function checkFile(
   file: File,
-  sizeLimit: number = 5 * 1024 * 1024,
+  fileSizeLimit: number = 5 * 1024 * 1024,
   onlyMedia: boolean = false,
 ):
   | {
@@ -10,10 +10,10 @@ function checkFile(
       reason: string;
     }
   | true {
-  if (file.size > sizeLimit) {
+  if (file.size > fileSizeLimit) {
     return {
       fileName: file.name,
-      reason: `Is too large only ${sizeLimit} allowed`,
+      reason: `Is too large only ${fileSizeLimit} allowed`,
     };
   }
   if (onlyMedia) {
@@ -29,9 +29,11 @@ function checkFile(
   return true;
 }
 
-export async function fileUpload(files: File[]) {
-  const sizeLimit: number = 5 * 1024 * 1024;
-  const onlyMedia: boolean = true;
+export async function fileUpload(
+  files: File[],
+  fileSizeLimit: number = 5 * 1024 * 1024,
+  onlyMedia: boolean = false,
+) {
   let result: returnedInfoType = {
     pass: true,
     message: "Something is wrong",
@@ -50,7 +52,7 @@ export async function fileUpload(files: File[]) {
   try {
     const formData = new FormData();
     files.forEach((file) => {
-      const validation = checkFile(file, sizeLimit, onlyMedia);
+      const validation = checkFile(file, fileSizeLimit, onlyMedia);
       if (validation === true) {
         formData.append("files", file);
       } else {
