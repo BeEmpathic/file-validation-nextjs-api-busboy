@@ -4,7 +4,7 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
-  // make it so it's just an property / object on the result
+  // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
 
   const initialResult: returnedInfoType = {
     pass: false,

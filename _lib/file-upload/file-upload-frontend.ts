@@ -33,6 +33,7 @@ export async function fileUpload(
   files: File[],
   fileSizeLimit: number = 5 * 1024 * 1024,
   onlyMedia: boolean = false,
+  filesAmount: number = 20,
 ) {
   let result: returnedInfoType = {
     pass: true,
@@ -43,9 +44,14 @@ export async function fileUpload(
     error: "",
   };
   if (files.length === 0) {
+    result.pass = false;
     result.error = "No files selected!";
 
     return result;
+  }
+  if (files.length < filesAmount) {
+    result.pass = false;
+    result.error = "Too many files";
   }
 
   try {
