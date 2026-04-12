@@ -43,7 +43,7 @@ export async function fileUpload(
     rejectedFiles: [],
     error: "",
   };
-  if (files.length === 0) {
+  if (files.length <= 0) {
     result.pass = false;
     result.error = "No files selected!";
 
