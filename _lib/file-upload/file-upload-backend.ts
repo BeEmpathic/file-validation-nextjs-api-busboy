@@ -151,9 +151,6 @@ export async function busboyFilesHandler(
       returnError("Aborted request");
     });
 
-    if (req.signal.aborted) {
-    }
-
     // the pipe of the request stream to the busboy
     nodeStream.pipe(bb);
   });
