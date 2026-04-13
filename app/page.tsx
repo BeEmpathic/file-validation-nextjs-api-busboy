@@ -4,6 +4,8 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
+  // doing the variables for files being stored in one place / .env file
+
   // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
   // maybe do that the uploaded files amount is set in the enviromental variable so you don't have to do it separetly for backend and frontend
   // do the totall amount on client side if it's needed technically somebody cannot skip it cause he would have to make a file bigger than the file limit
@@ -30,6 +32,7 @@ export default function Page() {
   }
 
   async function onSubmit(event: any) {
+    // variables for the limits from env processed
     const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT
       ? parseInt(process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT, 10)
       : 10;
@@ -40,7 +43,8 @@ export default function Page() {
       `${FILE_MAX_SIZE_INITIAL_VALUE * 1024 * 1024}`,
       10,
     ); // in MB
-    const ONLY_MEDIA_ALLOWED: boolean = process.env.NEXT_PUBLIC === "true";
+    const ONLY_MEDIA_ALLOWED: boolean = "false" === "true";
+    console.log("Only media allowed:", ONLY_MEDIA_ALLOWED);
     event.preventDefault();
 
     const response: returnedInfoType = await fileUpload(
