@@ -5,6 +5,9 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
   // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
+  // maybe do that the uploaded files amount is set in the enviromental variable so you don't have to do it separetly for backend and frontend
+  // do the totall amount on client side if it's needed technically somebody cannot skip it cause he would have to make a file bigger than the file limit
+  // learn how to have this same variable for backend and frontend without exposing anything
 
   const initialResult: returnedInfoType = {
     pass: false,
@@ -27,16 +30,24 @@ export default function Page() {
   }
 
   async function onSubmit(event: any) {
-    const filesAmount: number = 3;
-    const fileSizeLimit: number = 5 * 1024 * 1024;
-    const onlyMedia: boolean = true;
+    const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT
+      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT, 10)
+      : 10;
+    const FILE_MAX_SIZE_INITIAL_VALUE = process.env.NEXT_PUBLIC_MAX_FILE_SIZE
+      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILE_SIZE, 10)
+      : 5;
+    const FILE_MAX_SIZE: number = parseInt(
+      `${FILE_MAX_SIZE_INITIAL_VALUE * 1024 * 1024}`,
+      10,
+    ); // in MB
+    const ONLY_MEDIA_ALLOWED: boolean = process.env.NEXT_PUBLIC === "true";
     event.preventDefault();
 
     const response: returnedInfoType = await fileUpload(
       files,
-      filesAmount,
-      fileSizeLimit,
-      onlyMedia,
+      FILES_MAX_AMOUNT,
+      FILE_MAX_SIZE,
+      ONLY_MEDIA_ALLOWED,
     );
     setResult(response);
   }
