@@ -43,8 +43,9 @@ export default function Page() {
       `${FILE_MAX_SIZE_INITIAL_VALUE * 1024 * 1024}`,
       10,
     ); // in MB
-    const ONLY_MEDIA_ALLOWED: boolean = "false" === "true";
-    console.log("Only media allowed:", ONLY_MEDIA_ALLOWED);
+    const ONLY_MEDIA_ALLOWED: boolean =
+      process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true";
+
     event.preventDefault();
 
     const response: returnedInfoType = await fileUpload(
