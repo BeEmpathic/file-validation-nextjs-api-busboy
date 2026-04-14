@@ -13,7 +13,7 @@ function checkFile(
   if (file.size > fileSizeLimit) {
     return {
       fileName: file.name,
-      reason: `Is too large only ${fileSizeLimit} bytes (default 5MB) allowed`,
+      reason: `Is too large only ${fileSizeLimit / 1024 / 1024} MB allowed`,
     };
   }
   if (onlyMedia) {
