@@ -10,21 +10,27 @@ import {
 } from "@/_lib/file-upload/file-upload-backend";
 
 export async function POST(req: NextRequest) {
-  const MAX_AMOUNT_FILES = 20;
-  const MAX_REQUEST_SIZE = 5 * 15 * 1024 * 1024;
-  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
+    ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT)
+    : 20;
+  const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
+    ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE) * 1024 * 1024
+    : 5 * 1024 * 1024;
+  const REQUEST_MAX_SIZE = FILES_MAX_AMOUNT * FILE_MAX_SIZE;
+
+  // you don't check if files type is media only or not in backend it will become a problem
 
   // busboy limits
   const limits = {
-    files: MAX_AMOUNT_FILES,
-    fileSize: MAX_FILE_SIZE,
+    files: FILES_MAX_AMOUNT,
+    fileSize: FILE_MAX_SIZE,
   };
 
   try {
     if (
       !(await headerContentLengthCheck(
         req.headers.get("content-length"),
-        MAX_REQUEST_SIZE,
+        REQUEST_MAX_SIZE,
       ))
     )
       return Response.json(
