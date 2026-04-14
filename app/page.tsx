@@ -33,11 +33,11 @@ export default function Page() {
 
   async function onSubmit(event: any) {
     // variables for the limits from env processed
-    const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT
-      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT, 10)
+    const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
+      ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
       : 10;
-    const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_MAX_FILE_SIZE
-      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILE_SIZE, 10) * 1024 * 1024
+    const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
+      ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE, 10) * 1024 * 1024
       : 5 * 1024 * 1024; // in MB
 
     const ONLY_MEDIA_ALLOWED: boolean =
