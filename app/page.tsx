@@ -36,15 +36,12 @@ export default function Page() {
     const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT
       ? parseInt(process.env.NEXT_PUBLIC_MAX_FILES_AMOUNT, 10)
       : 10;
-    const FILE_MAX_SIZE_INITIAL_VALUE = process.env.NEXT_PUBLIC_MAX_FILE_SIZE
-      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILE_SIZE, 10)
-      : 5;
-    const FILE_MAX_SIZE: number = parseInt(
-      `${FILE_MAX_SIZE_INITIAL_VALUE * 1024 * 1024}`,
-      10,
-    ); // in MB
+    const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_MAX_FILE_SIZE
+      ? parseInt(process.env.NEXT_PUBLIC_MAX_FILE_SIZE, 10) * 1024 * 1024
+      : 5 * 1024 * 1024; // in MB
+
     const ONLY_MEDIA_ALLOWED: boolean =
-      process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true";
+      process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
     event.preventDefault();
 
