@@ -1,16 +1,11 @@
 "use client";
 import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useTransition, useState, startTransition } from "react";
 
 export default function Page() {
-  // doing the variables for files being stored in one place / .env file
-
   // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
-  // maybe do that the uploaded files amount is set in the enviromental variable so you don't have to do it separetly for backend and frontend
-  // do the totall amount on client side if it's needed technically somebody cannot skip it cause he would have to make a file bigger than the file limit
-  // learn how to have this same variable for backend and frontend without exposing anything
-
+  // maybe do file types on the backend
   const initialResult: returnedInfoType = {
     pass: false,
     message: "No files selected",
@@ -22,6 +17,9 @@ export default function Page() {
 
   const [result, setResult] = useState(initialResult);
   const [files, setFiles] = useState<File[]>([]);
+
+  const [isPending, startTransition] = useTransition();
+
   function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length === 0) {
       setFiles([]);
@@ -32,34 +30,40 @@ export default function Page() {
   }
 
   async function onSubmit(event: any) {
-    // variables for the limits from env processed
-    const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
-      ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
-      : 10;
-    const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
-      ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE, 10) * 1024 * 1024
-      : 5 * 1024 * 1024; // in MB
+    startTransition(async () => {
+      // variables for the limits from env processed
+      const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
+        ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
+        : 10;
+      const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
+        ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE, 10) * 1024 * 1024
+        : 5 * 1024 * 1024; // in MB
 
-    const ONLY_MEDIA_ALLOWED: boolean =
-      process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
+      const ONLY_MEDIA_ALLOWED: boolean =
+        process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-    event.preventDefault();
+      event.preventDefault();
 
-    const response: returnedInfoType = await fileUpload(
-      files,
-      FILES_MAX_AMOUNT,
-      FILE_MAX_SIZE,
-      ONLY_MEDIA_ALLOWED,
-    );
-    setResult(response);
+      const response: returnedInfoType = await fileUpload(
+        files,
+        FILES_MAX_AMOUNT,
+        FILE_MAX_SIZE,
+        ONLY_MEDIA_ALLOWED,
+      );
+      setResult(response);
+    });
   }
 
   return (
     <div className="border">
-      <form onSubmit={onSubmit}>
+      <form action={onSubmit}>
         <input type="file" multiple name="files" onChange={handleFilesChange} />
-        <button className="cursor-pointer border-solid" type="submit">
-          Submit
+        <button
+          disabled={isPending}
+          className="cursor-pointer border-solid"
+          type="submit"
+        >
+          {isPending ? "Submitting..." : "Submit"}
         </button>
 
         <div id="result">
