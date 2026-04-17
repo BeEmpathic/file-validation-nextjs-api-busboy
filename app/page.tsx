@@ -29,7 +29,7 @@ export default function Page() {
     setFiles(Array.from(e.target.files));
   }
 
-  async function onSubmit(event: any) {
+  async function onSubmit() {
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -42,7 +42,6 @@ export default function Page() {
       const ONLY_MEDIA_ALLOWED: boolean =
         process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-      event.preventDefault();
 
       const response: returnedInfoType = await fileUpload(
         files,
