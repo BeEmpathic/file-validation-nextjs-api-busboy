@@ -30,6 +30,7 @@ export default function Page() {
   }
 
   async function onSubmit() {
+    setResult(initialResult);
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -42,7 +43,8 @@ export default function Page() {
       const ONLY_MEDIA_ALLOWED: boolean =
         process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-
+      console.log(FILE_MAX_SIZE);
+      console.log(process.env.NEXT_PUBLIC_FILE_MAX_SIZE);
       const response: returnedInfoType = await fileUpload(
         files,
         FILES_MAX_AMOUNT,
