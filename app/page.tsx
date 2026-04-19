@@ -3,7 +3,7 @@ import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, startTransition } from "react";
-import DiplayResult from "./_components/DisplayResult";
+import DisplayResult from "./_components/DisplayResult";
 
 export default function Page() {
   // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
@@ -32,6 +32,7 @@ export default function Page() {
   }
 
   async function onSubmit() {
+    setResult(initialResult);
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -68,7 +69,7 @@ export default function Page() {
           {isPending ? "Submitting..." : "Submit"}
         </button>
 
-        <DiplayResult result={result} />
+        <DisplayResult result={result} />
       </form>
     </div>
   );

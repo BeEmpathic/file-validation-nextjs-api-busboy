@@ -4,7 +4,7 @@ type DisplayResultProps = {
   result: returnedInfoType;
 };
 
-export default function DiplayResult({ result }: DisplayResultProps) {
+export default function DisplayResult({ result }: DisplayResultProps) {
   return (
     <div id="result">
       {result.error ? (
@@ -22,7 +22,10 @@ export default function DiplayResult({ result }: DisplayResultProps) {
 
       {result.uploadedFilesNames
         ? result.uploadedFilesNames.map((fileName: string, index: number) => (
-            <div key={index}>{fileName} Uploaded successfully</div>
+            <div className="text-green-500" key={index}>
+              {" "}
+              {fileName} Uploaded successfully!
+            </div>
           ))
         : null}
       {}
