@@ -10,7 +10,7 @@ export default function Page() {
   // maybe do file types on the backend
   const initialResult: returnedInfoType = {
     pass: false,
-    message: "No files selected",
+    message: "Feed me the files!",
     status: 400,
     uploadedFilesNames: [],
     rejectedFiles: [],
@@ -23,6 +23,7 @@ export default function Page() {
   const [isPending, startTransition] = useTransition();
 
   function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
+    setResult(initialResult);
     if (!e.target.files || e.target.files.length === 0) {
       setFiles([]);
       return;
@@ -32,7 +33,6 @@ export default function Page() {
   }
 
   async function onSubmit() {
-    setResult(initialResult);
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -68,9 +68,8 @@ export default function Page() {
         >
           {isPending ? "Submitting..." : "Submit"}
         </button>
-
-        <DisplayResult result={result} />
       </form>
+      <DisplayResult result={result} />
     </div>
   );
 }
