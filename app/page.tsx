@@ -6,8 +6,13 @@ import { ChangeEvent, useTransition, useState, startTransition } from "react";
 import DisplayResult from "./_components/DisplayResult";
 
 export default function Page() {
-  // Do the loading state and the css for this page not much work but you should do it it's going to be easy and fun
-  // maybe do file types on the backend
+  // - Dropezone to do
+  // -
+  // - go and cry cause suddenly this project is fucking endlesss ;-;
+  // - Maske so the files are rejected before clicking the upload button
+  // / disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
+  // - The css for this page not much work but you should do it it's going to be easy and fun
+  // - maybe do file types on the backend
   const initialResult: returnedInfoType = {
     pass: false,
     message: "Feed me the files!",
