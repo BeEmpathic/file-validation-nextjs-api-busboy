@@ -4,6 +4,7 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, startTransition } from "react";
 import DisplayResult from "./_components/DisplayResult";
+import DropZone from "./_components/DropZone";
 
 export default function Page() {
   // - Dropezone to do
@@ -75,6 +76,7 @@ export default function Page() {
         </button>
       </form>
       <DisplayResult result={result} />
+      <DropZone />
     </div>
   );
 }
