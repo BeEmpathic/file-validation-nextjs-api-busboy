@@ -14,6 +14,7 @@ export default function Page() {
   // / disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
   // - The css for this page not much work but you should do it it's going to be easy and fun
   // - maybe do file types on the backend
+
   const initialResult: returnedInfoType = {
     pass: false,
     message: "Feed me the files!",
@@ -64,7 +65,7 @@ export default function Page() {
   }
 
   return (
-    <div className="border">
+    <div className="border max-w-1/2 m-auto myClass">
       <form action={onSubmit}>
         <input type="file" multiple name="files" onChange={handleFilesChange} />
         <button
