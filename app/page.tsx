@@ -65,19 +65,26 @@ export default function Page() {
   }
 
   return (
-    <div className="border max-w-1/2 m-auto myClass">
-      <form action={onSubmit}>
-        <input type="file" multiple name="files" onChange={handleFilesChange} />
-        <button
-          disabled={isPending}
-          className="cursor-pointer border-solid"
-          type="submit"
-        >
-          {isPending ? "Submitting..." : "Submit"}
-        </button>
-      </form>
-      <DisplayResult result={result} />
-      <DropZone />
+    <div className="container border h-dvh content-center">
+      <div className="file-upload-form flex-col flex border w-min p-3 m-auto flex content-center">
+        <form className="text-center flex-initial border p-3" action={onSubmit}>
+          <input
+            type="file"
+            multiple
+            name="files"
+            onChange={handleFilesChange}
+          />
+          <button
+            disabled={isPending}
+            className="cursor-pointer border-solid"
+            type="submit"
+          >
+            {isPending ? "Submitting..." : "Submit"}
+          </button>
+        </form>
+        <DisplayResult result={result} />
+        <DropZone />
+      </div>
     </div>
   );
 }

@@ -27,6 +27,7 @@ export default function DropZone() {
 
   return (
     <div
+      className="border"
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
