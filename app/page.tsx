@@ -65,8 +65,8 @@ export default function Page() {
   }
 
   return (
-    <div className="size-full border border-red-600 h-dvh flex content-center">
-      <div className="file-upload-form flex flex-col border p-3 size-full content-center">
+    <div className="size-full border border-red-600 h-dvh flex justify-center items-center p8">
+      <div className="file-upload-form flex flex-col border p-8 max-w-2xl content-center">
         <form className="text-center border p-3" action={onSubmit}>
           <input
             type="file"
