@@ -8,7 +8,7 @@ import DropZone from "./_components/DropZone";
 
 export default function Page() {
   // - Dropezone to do
-  // -
+  // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender
   // - go and cry cause suddenly this project is fucking endlesss ;-;
   // - Maske so the files are rejected before clicking the upload button
   // / disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
@@ -65,9 +65,12 @@ export default function Page() {
   }
 
   return (
-    <div className="bg-[#001] size-full border border-red-600 h-dvh flex justify-center items-center p8">
-      <div className="rounded-lg file-upload-form flex flex-col border p-8 max-w-2xl content-center">
-        <form className="text-center border p-3" action={onSubmit}>
+    <div className="bg-[#1A1953] size-full border border-red-600 h-dvh flex justify-center items-center p8">
+      <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col border p-8 max-w-2xl content-center">
+        <form
+          className="text-center border border-dashed p-3"
+          action={onSubmit}
+        >
           <input
             type="file"
             multiple
