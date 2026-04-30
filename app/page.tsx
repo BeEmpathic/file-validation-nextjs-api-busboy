@@ -7,13 +7,16 @@ import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/DropZone";
 
 export default function Page() {
+  // - you broke your result clean up ;-; but I think you should leave it for later
   // - Dropezone to do
   // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender
   // - go and cry cause suddenly this project is fucking endlesss ;-;
   // - Maske so the files are rejected before clicking the upload button
   // / disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
   // - The css for this page not much work but you should do it it's going to be easy and fun
+  // make so validation happens on change instead of on submit
   // - maybe do file types on the backend
+  // why I'm adding todos instead of deleting them ;-;
 
   const initialResult: returnedInfoType = {
     pass: false,
@@ -28,16 +31,6 @@ export default function Page() {
   const [files, setFiles] = useState<File[]>([]);
 
   const [isPending, startTransition] = useTransition();
-
-  function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
-    setResult(initialResult);
-    if (!e.target.files || e.target.files.length === 0) {
-      setFiles([]);
-      return;
-    }
-
-    setFiles(Array.from(e.target.files));
-  }
 
   async function onSubmit() {
     startTransition(async () => {
@@ -71,12 +64,7 @@ export default function Page() {
           className="text-center border border-dashed p-3"
           action={onSubmit}
         >
-          <input
-            type="file"
-            multiple
-            name="files"
-            onChange={handleFilesChange}
-          />
+          <DropZone filesFromInput={files} /> //this dropzone has an input in it
           <button
             disabled={isPending}
             className="cursor-pointer border-solid"
@@ -86,7 +74,6 @@ export default function Page() {
           </button>
         </form>
         <DisplayResult result={result} />
-        <DropZone />
       </div>
     </div>
   );

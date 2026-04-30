@@ -1,7 +1,16 @@
-import { useState } from "react";
-export default function DropZone() {
+import { ChangeEvent, useState } from "react";
+export default function DropZone({ files, setFiles }) {
   const [dragging, setDragging] = useState(false);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(filesFromInput);
+
+  function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files || e.target.files.length === 0) {
+      setFiles([]);
+      return;
+    }
+    // make so validation happens on change instead of on submit
+    setFiles(Array.from(e.target.files));
+  }
 
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -33,6 +42,7 @@ export default function DropZone() {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+      <input type="file" multiple name="files" onChange={handleFilesChange} />
       <h2>Here will be a dropzone</h2>
     </div>
   );
