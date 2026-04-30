@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from "react";
 export default function DropZone({ files, setFiles }) {
   const [dragging, setDragging] = useState(false);
-  const [files, setFiles] = useState(filesFromInput);
 
   function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length === 0) {

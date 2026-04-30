@@ -45,8 +45,6 @@ export default function Page() {
       const ONLY_MEDIA_ALLOWED: boolean =
         process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-      console.log(FILE_MAX_SIZE);
-      console.log(process.env.NEXT_PUBLIC_FILE_MAX_SIZE);
       const response: returnedInfoType = await fileUpload(
         files,
         FILES_MAX_AMOUNT,
@@ -64,7 +62,8 @@ export default function Page() {
           className="text-center border border-dashed p-3"
           action={onSubmit}
         >
-          <DropZone filesFromInput={files} /> //this dropzone has an input in it
+          <DropZone files={files} setFiles={setFiles} /> //this dropzone has an
+          input in it
           <button
             disabled={isPending}
             className="cursor-pointer border-solid"
