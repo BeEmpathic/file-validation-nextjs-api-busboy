@@ -62,8 +62,8 @@ export default function Page() {
           className="text-center border border-dashed p-3"
           action={onSubmit}
         >
-          <DropZone files={files} setFiles={setFiles} /> //this dropzone has an
-          input in it
+          <DropZone files={files} setFiles={setFiles} />
+          {/*<!-- this dropzone has an input in it */}
           <button
             disabled={isPending}
             className="cursor-pointer border-solid"

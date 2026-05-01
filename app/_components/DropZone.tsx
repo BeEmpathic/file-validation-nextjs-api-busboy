@@ -1,6 +1,10 @@
 import { ChangeEvent, useState } from "react";
+
 export default function DropZone({ files, setFiles }) {
+  // aren't we listening for this anyway check if this is the right way or don't we will see
   const [dragging, setDragging] = useState(false);
+
+  function dropzoneFilesPreview(files: Array<File>) {}
 
   function handleFilesChange(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length === 0) {
@@ -34,15 +38,25 @@ export default function DropZone({ files, setFiles }) {
   }
 
   return (
-    <div
-      className="border"
-      onDragOver={handleDragOver}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
-      <input type="file" multiple name="files" onChange={handleFilesChange} />
-      <h2>Here will be a dropzone</h2>
+    <div>
+      <label>
+        <div
+          className="border"
+          onDragOver={handleDragOver}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <input
+            type="file"
+            multiple
+            name="files"
+            onChange={handleFilesChange}
+          />
+          <h2>Here will be a dropzone</h2>
+        </div>
+      </label>
+      <div id="dropzone-files-preview"></div>
     </div>
   );
 }
