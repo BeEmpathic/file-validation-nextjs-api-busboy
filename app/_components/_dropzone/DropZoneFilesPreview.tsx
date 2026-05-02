@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-function DropzonePreviewCard({ file }: { file: File }) {
+export function DropzonePreviewCard({ file }: { file: File }) {
   const [preview, setPreview] = useState<string | Blob | undefined>("");
   const isImage = file.type.startsWith("image/");
 

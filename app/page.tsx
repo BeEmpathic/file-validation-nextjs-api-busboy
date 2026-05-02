@@ -4,7 +4,7 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, startTransition } from "react";
 import DisplayResult from "./_components/DisplayResult";
-import DropZone from "./_components/DropZone";
+import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // - you broke your result clean up ;-; but I think you should leave it for later
