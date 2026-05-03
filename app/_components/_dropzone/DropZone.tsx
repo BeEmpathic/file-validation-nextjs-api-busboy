@@ -1,8 +1,10 @@
 import { ChangeEvent, useState } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
-export const DropZone = ({ files, setFiles }) => {
-  function onRemove() {}
+const DropZone = ({ files, setFiles }) => {
+  const removeFile = (indexToRemove) => {
+    setFiles((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
 
   // aren't we listening for this anyway check if this is the right way or don't we will see
   const [dragging, setDragging] = useState(false);
@@ -66,6 +68,7 @@ export const DropZone = ({ files, setFiles }) => {
                 files={files}
                 setFiles={setFiles}
                 key={index}
+                onRemove={removeFile(index)}
               />
             ))
           : ""}
@@ -73,3 +76,5 @@ export const DropZone = ({ files, setFiles }) => {
     </div>
   );
 };
+
+export default DropZone;

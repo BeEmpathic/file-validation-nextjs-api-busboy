@@ -22,7 +22,7 @@ export function DropzonePreviewCard({ file, onRemove }: { file: File }) {
         ""
       )}
 
-      <button onClick={() => setFiles((prev) => [prev.pop(file)])}>X</button>
+      <button onClick={onRemove}>X</button>
     </div>
   );
 }
