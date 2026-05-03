@@ -68,7 +68,7 @@ const DropZone = ({ files, setFiles }) => {
                 files={files}
                 setFiles={setFiles}
                 key={index}
-                onRemove={removeFile(index)}
+                onRemove={() => removeFile(index)}
               />
             ))
           : ""}
