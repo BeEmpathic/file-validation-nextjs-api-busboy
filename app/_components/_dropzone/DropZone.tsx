@@ -51,14 +51,22 @@ export default function DropZone({ files, setFiles }) {
             multiple
             name="files"
             onChange={handleFilesChange}
+            hidden
           />
           <h2>Here will be a dropzone</h2>
         </div>
       </label>
       <div id="dropzone-files-preview">
-        {files.map((file, index) => (
-          <DropzonePreviewCard file={file} key={index} />
-        ))}
+        {files.length > 0
+          ? files.map((file, index) => (
+              <DropzonePreviewCard
+                file={file}
+                files={files}
+                setFiles={setFiles}
+                key={index}
+              />
+            ))
+          : ""}
       </div>
     </div>
   );
