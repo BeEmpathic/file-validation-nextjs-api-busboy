@@ -1,7 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
-export default function DropZone({ files, setFiles }) {
+export const DropZone = ({ files, setFiles }) => {
+  function onRemove() {}
+
   // aren't we listening for this anyway check if this is the right way or don't we will see
   const [dragging, setDragging] = useState(false);
 
@@ -70,4 +72,4 @@ export default function DropZone({ files, setFiles }) {
       </div>
     </div>
   );
-}
+};

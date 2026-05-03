@@ -7,6 +7,7 @@ import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
+  // swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
   // - you broke your result clean up ;-; but I think you should leave it for later
   // - Dropezone to do
   // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export function DropzonePreviewCard({ file, files, setFiles }: { file: File }) {
+export function DropzonePreviewCard({ file, onRemove }: { file: File }) {
   const [preview, setPreview] = useState<string | Blob | undefined>("");
   const isImage = file.type.startsWith("image/");
 
@@ -11,7 +11,9 @@ export function DropzonePreviewCard({ file, files, setFiles }: { file: File }) {
 
     return () => URL.revokeObjectURL(objectUrl);
   }, [file, isImage]);
-  // rework the removing function you need to use indexes instead of files and you should use filter instead of pop I think learn about that anyway my brain is like dead today I don't think I can keep going
+  // rework the removing function you need to use indexes instead of files,
+  //  and you should use filter instead of pop I think learn about that anyway,
+  //  my brain is like dead today I don't think I can keep going
   return (
     <div className="w-100">
       {preview ? (
