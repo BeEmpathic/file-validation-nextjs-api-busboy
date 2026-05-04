@@ -94,7 +94,11 @@ const DropZone = ({ files, setFiles }) => {
             onChange={handleFilesChange}
             hidden
           />
-          <h2>Here will be a dropzone</h2>
+          <h2>
+            {draggingWindow
+              ? "Drop your files here!"
+              : "You can drop you files here to upload them"}
+          </h2>
         </div>
       </label>
       <div id="dropzone-files-preview">
