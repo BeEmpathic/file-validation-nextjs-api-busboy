@@ -4,6 +4,38 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 // rework everything so it works on window instead of only the dropZone area
 
 const DropZone = ({ files, setFiles }) => {
+  const [dragging, setDragging] = useState(false);
+  const [draggingWindow, setDraggingWindow] = useState(false);
+
+  useEffect(() => {
+    const handleWindowDragEnter = (e: DragEvent) => {
+      e.preventDefault();
+      setDraggingWindow(true);
+    };
+
+    const handleWindowDragLeave = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    const handleWindowDrop = (e: DragEvent) => {
+      e.preventDefault();
+      setDraggingWindow(false);
+    };
+    const handleDragOver = (e: DragEvent) => e.preventDefault();
+
+    window.addEventListener("dragenter", handleWindowDragEnter);
+    window.addEventListener("dragleave", handleWindowDragLeave);
+    window.addEventListener("dragover", handleDragOver);
+    window.addEventListener("drop", handleWindowDrop);
+
+    return () => {
+      window.removeEventListener("dragenter", handleWindowDragEnter);
+      window.removeEventListener("dragleave", handleWindowDragLeave);
+      window.removeEventListener("dragover", handleDragOver);
+      window.removeEventListener("drop", handleWindowDrop);
+    };
+  }, []);
+
   const removeFile = (indexToRemove: number) => {
     setFiles((prev) =>
       prev.filter((_, index: number) => index !== indexToRemove),
@@ -11,7 +43,6 @@ const DropZone = ({ files, setFiles }) => {
   };
 
   // aren't we listening for this anyway check if this is the right way or don't we will see
-  const [dragging, setDragging] = useState(false);
 
   const handleFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -50,7 +81,7 @@ const DropZone = ({ files, setFiles }) => {
     <div>
       <label>
         <div
-          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400 ${dragging ? "bg-[#162E93]" : ""}`}
+          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400 ${draggingWindow ? "bg-[#162E93]" : ""}`}
           onDragOver={(e) => handleDragOver(e)}
           onDragEnter={(e) => handleDragEnter(e)}
           onDragLeave={() => handleDragLeave()}
