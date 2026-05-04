@@ -1,8 +1,9 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
+// rework everything so it works on window instead of only the dropZone area
+
 const DropZone = ({ files, setFiles }) => {
-  // this doesn't work for some reason
   const removeFile = (indexToRemove: number) => {
     setFiles((prev) =>
       prev.filter((_, index: number) => index !== indexToRemove),
@@ -22,6 +23,7 @@ const DropZone = ({ files, setFiles }) => {
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    setDragging(true);
     e.preventDefault();
   };
 
@@ -48,11 +50,11 @@ const DropZone = ({ files, setFiles }) => {
     <div>
       <label>
         <div
-          className={`border-2 border-dashed border-green-400 rounded-lg p-12 text-center cursor-pointer transition-colors`}
-          onDragOver={handleDragOver}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
+          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400 ${dragging ? "bg-[#162E93]" : ""}`}
+          onDragOver={(e) => handleDragOver(e)}
+          onDragEnter={(e) => handleDragEnter(e)}
+          onDragLeave={() => handleDragLeave()}
+          onDrop={(e) => handleDrop(e)}
         >
           <input
             type="file"
