@@ -12,19 +12,27 @@ const DropZone = ({
 }) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
+  const [dragCounter, setDragCounter] = useState(0);
 
   useEffect(() => {
     const handleWindowDragEnter = (e: DragEvent) => {
       e.preventDefault();
+      setDragCounter((prev) => prev + 1);
       setDraggingWindow(true);
     };
 
     const handleWindowDragLeave = (e: DragEvent) => {
       e.preventDefault();
+      setDragCounter((prev) => {
+        const newCount = prev - 1;
+        if (newCount <= 0) setDraggingWindow(false);
+        return newCount;
+      });
     };
 
     const handleWindowDrop = (e: DragEvent) => {
       e.preventDefault();
+      setDragCounter(0);
       setDraggingWindow(false);
     };
     const handleDragOver = (e: DragEvent) => e.preventDefault();
@@ -59,23 +67,10 @@ const DropZone = ({
     setFiles(Array.from(e.target.files));
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    setDragging(true);
-    e.preventDefault();
-  };
-
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setDragging(true);
-  };
-
-  function handleDragLeave() {
-    setDragging(false);
-  }
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setDragging(false);
+    setDragCounter(0);
+    setDraggingWindow(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     setFiles((prev) => [...prev, ...droppedFiles]);
@@ -88,9 +83,6 @@ const DropZone = ({
       <label>
         <div
           className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400 ${draggingWindow ? "bg-[#162E93]" : ""}`}
-          onDragOver={(e) => handleDragOver(e)}
-          onDragEnter={(e) => handleDragEnter(e)}
-          onDragLeave={() => handleDragLeave()}
           onDrop={(e) => handleDrop(e)}
         >
           <input
