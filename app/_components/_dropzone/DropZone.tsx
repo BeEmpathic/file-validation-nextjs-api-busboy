@@ -1,15 +1,13 @@
 import { ChangeEvent, useState, useEffect } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
-// rework everything so it works on window instead of only the dropZone area
+// TODOS!!!:
+// - Work on the cards so the show the file name and file's size
+// - Make the X button for deleting the file better
+// - Think if making the dropzone react to the window dragging was a good idea cause figma's Ai did it with only the div
+// - Work on types so there is no errors
 
-const DropZone = ({
-  files,
-  setFiles,
-}: {
-  files: Array<File>;
-  setFiles: void;
-}) => {
+const DropZone = ({ files, setFiles }: { files: File[]; setFiles: void }) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
@@ -63,7 +61,6 @@ const DropZone = ({
       setFiles([]);
       return;
     }
-    // make so validation happens on change instead of on submit
     setFiles(Array.from(e.target.files));
   };
 
@@ -82,7 +79,8 @@ const DropZone = ({
     <div>
       <label>
         <div
-          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400 ${draggingWindow ? "bg-[#162E93]" : ""}`}
+          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400
+             ${draggingWindow ? "bg-[#162E93]" : ""}`}
           onDrop={(e) => handleDrop(e)}
         >
           <input
