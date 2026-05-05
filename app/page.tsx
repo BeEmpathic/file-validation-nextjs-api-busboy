@@ -8,7 +8,7 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
-  // - you broke your result clean up ;-; but I think you should leave it for later
+  // - fix the result clean up cause you have to fucking check why the files are uploading when you miss click
   // - Dropezone to do
   // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender
   // - go and cry cause suddenly this project is fucking endlesss ;-;
@@ -64,7 +64,7 @@ export default function Page() {
           {/*<!-- this dropzone has an input in it */}
           <button
             disabled={isPending}
-            className="cursor-pointer border-solid"
+            className="cursor-pointer border "
             type="submit"
           >
             {isPending ? "Submitting..." : "Submit"}

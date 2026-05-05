@@ -3,7 +3,13 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // rework everything so it works on window instead of only the dropZone area
 
-const DropZone = ({ files, setFiles }) => {
+const DropZone = ({
+  files,
+  setFiles,
+}: {
+  files: Array<File>;
+  setFiles: void;
+}) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
 

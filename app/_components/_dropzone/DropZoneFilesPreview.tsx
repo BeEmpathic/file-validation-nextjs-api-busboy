@@ -28,7 +28,14 @@ export function DropzonePreviewCard({
         ""
       )}
 
-      <button onClick={onRemove}>X</button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          onRemove();
+        }}
+      >
+        X
+      </button>
     </div>
   );
 }
