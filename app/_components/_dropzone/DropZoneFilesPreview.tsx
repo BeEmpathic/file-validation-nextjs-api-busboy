@@ -37,7 +37,3 @@ export function DropzonePreviewCard({
     </div>
   );
 }
-
-// for now this is kind of useless but I think it makes sense to use it,
-//  so this is a div with the cards not just cards showing up in a random place
-function DropzonePreview({ files }: { files: Array<File> }) {}

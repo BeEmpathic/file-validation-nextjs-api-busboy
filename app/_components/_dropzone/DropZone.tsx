@@ -73,7 +73,8 @@ const DropZone = ({
       setFiles([]);
       return;
     }
-    setFiles(Array.from(e.target.files));
+    const inputFiles = Array.from(e.target.files);
+    setFiles((prev) => [...prev, ...inputFiles]);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
