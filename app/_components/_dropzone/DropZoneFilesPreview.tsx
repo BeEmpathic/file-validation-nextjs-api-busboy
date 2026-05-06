@@ -4,7 +4,7 @@ export function DropzonePreviewCard({
   onRemove,
 }: {
   file: File;
-  onRemove: void;
+  onRemove: () => void;
 }) {
   const [preview, setPreview] = useState<string | Blob | undefined>("");
   const isImage = file.type.startsWith("image/");

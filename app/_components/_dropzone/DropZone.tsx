@@ -1,4 +1,10 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import {
+  ChangeEvent,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // TODOS!!!:
@@ -7,7 +13,13 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 // - Think if making the dropzone react to the window dragging was a good idea cause figma's Ai did it with only the div
 // - Work on types so there is no errors
 
-const DropZone = ({ files, setFiles }: { files: File[]; setFiles: void }) => {
+const DropZone = ({
+  files,
+  setFiles,
+}: {
+  files: File[];
+  setFiles: Dispatch<SetStateAction<File[]>>;
+}) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
