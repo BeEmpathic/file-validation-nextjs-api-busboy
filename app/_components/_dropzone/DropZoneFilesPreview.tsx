@@ -29,6 +29,7 @@ export function DropzonePreviewCard({
       )}
 
       <button
+        className="absolute top-1 right-1 p-1 rounder-full cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           onRemove();
