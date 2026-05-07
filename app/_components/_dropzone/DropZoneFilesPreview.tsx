@@ -19,12 +19,12 @@ export function DropzonePreviewCard({
   }, [file, isImage]);
 
   return (
-    <div className="relative w-full max-w-[200px] aspect-square overflow-hidden rounded-lg border">
+    <div className="relative m-4 overflow-hidden rounded-lg border">
       {preview && (
         <img
           src={preview}
           alt={file.name}
-          className="absolute inset-0 size-full object-cover"
+          className="inset-0 size-full object-cover aspect-square"
         />
       )}
 

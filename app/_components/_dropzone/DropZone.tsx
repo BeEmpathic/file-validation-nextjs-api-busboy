@@ -110,7 +110,7 @@ const DropZone = ({
           </h2>
         </div>
       </label>
-      <div id="dropzone-files-preview">
+      <div className="flex flex-wrap" id="dropzone-files-preview">
         {files.length > 0
           ? files.map((file, index) => (
               <DropzonePreviewCard
