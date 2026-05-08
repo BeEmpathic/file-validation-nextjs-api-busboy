@@ -92,8 +92,9 @@ const DropZone = ({
     <div>
       <label>
         <div
-          className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors border-green-400
-             ${draggingWindow ? "bg-[#162E93]" : ""}`}
+          id="dropzone"
+          className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors border-green-400
+             ${draggingWindow ? "bg-[#162E93]" : ""} cursor-pointer bg-red-500`}
           onDrop={(e) => handleDrop(e)}
         >
           <input
@@ -110,7 +111,10 @@ const DropZone = ({
           </h2>
         </div>
       </label>
-      <div className="flex flex-wrap" id="dropzone-files-preview">
+      <div
+        className="flex flex-wrap justify-center"
+        id="dropzone-files-preview"
+      >
         {files.length > 0
           ? files.map((file, index) => (
               <DropzonePreviewCard

@@ -19,7 +19,7 @@ export function DropzonePreviewCard({
   }, [file, isImage]);
 
   return (
-    <div className="relative m-4 overflow-hidden rounded-lg border">
+    <div className="relative aspect-square m-4 overflow-hidden rounded-lg border">
       {preview && (
         <img
           src={preview}
@@ -29,7 +29,7 @@ export function DropzonePreviewCard({
       )}
 
       <button
-        className="absolute top-1 right-1 p-1 rounder-full cursor-pointer"
+        className="hover:bg-[rgba(100,0,0,0.9)] w-1/10 h-1/10 flex aspect-square border border-grey-900 items-center justify-center absolute top-1 right-1 p-3 rounded-full cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           onRemove();
