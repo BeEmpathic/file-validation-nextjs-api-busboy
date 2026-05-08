@@ -94,7 +94,7 @@ const DropZone = ({
         <div
           id="dropzone"
           className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors border-green-400
-             ${draggingWindow ? "bg-[#162E93]" : ""} cursor-pointer bg-red-500`}
+             ${draggingWindow ? "bg-[#162E93]" : ""} cursor-pointer`}
           onDrop={(e) => handleDrop(e)}
         >
           <input
