@@ -8,7 +8,6 @@ import {
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // TODOS!!!:
-// - Check why you can't add an image on the phone
 // - Work on the cards so the show the file name and file's size
 // - Make the X button for deleting the file better
 // - Think if making the dropzone react to the window dragging was a good idea cause figma's Ai did it with only the div
