@@ -19,24 +19,30 @@ export function DropzonePreviewCard({
   }, [file, isImage]);
 
   return (
-    <div className="relative aspect-square m-4 overflow-hidden rounded-lg border">
-      {preview && (
-        <img
-          src={preview}
-          alt={file.name}
-          className="inset-0 size-full object-cover aspect-square"
-        />
-      )}
+    <div className="border my-5 rounded-lg bg-sky-500">
+      <div className="bg-white p-5 relative aspect-square m-4 overflow-hidden rounded-lg ">
+        {preview && (
+          <img
+            src={preview}
+            alt={file.name}
+            className="inset-0 size-full object-cover aspect-square"
+          />
+        )}
 
-      <button
-        className="hover:bg-[rgba(255,0,0,0.5)] w-[3rem] aspect-square font-bold flex border border-grey-900 items-center justify-center absolute top-1 right-1 rounded-full cursor-pointer"
-        onClick={(e) => {
-          e.preventDefault();
-          onRemove();
-        }}
-      >
-        X
-      </button>
+        <button
+          className="hover:bg-[rgba(255,0,0,0.5)] w-[3rem] aspect-square font-bold flex border border-grey-900 items-center justify-center absolute top-1 right-1 rounded-full cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            onRemove();
+          }}
+        >
+          X
+        </button>
+      </div>
+      <div>
+        <p>{file.name}</p>
+        <p>{Math.round(file.size / 1024 / 1024)} MB</p>
+      </div>
     </div>
   );
 }
