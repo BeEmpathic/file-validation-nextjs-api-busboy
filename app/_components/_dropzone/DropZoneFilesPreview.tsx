@@ -29,7 +29,7 @@ export function DropzonePreviewCard({
       )}
 
       <button
-        className="hover:bg-[rgba(100,0,0,0.9)] h-1/15 flex aspect-square border border-grey-900 items-center justify-center absolute top-1 right-1 rounded-full cursor-pointer"
+        className="hover:bg-[rgba(100,0,0,0.9)] h-1/5 flex aspect-square border border-grey-900 items-center justify-center absolute top-1 right-1 rounded-full cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           onRemove();

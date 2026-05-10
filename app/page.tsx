@@ -59,7 +59,7 @@ export default function Page() {
   return (
     <div className="bg-[#1A1953] flex border min-h-dvh flex justify-center items-center p8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col border p-8 max-w-2xl content-center">
-        <form className="text-center border p-3" action={onSubmit}>
+        <form action={onSubmit} className="text-center border p-3">
           <DropZone files={files} setFiles={setFiles} />
           {/*<!-- this dropzone has an input in it */}
           <button
@@ -71,6 +71,8 @@ export default function Page() {
           </button>
         </form>
         <DisplayResult result={result} />
+
+        {files[0] && files[0].name}
       </div>
     </div>
   );
