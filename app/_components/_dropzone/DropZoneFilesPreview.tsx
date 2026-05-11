@@ -45,8 +45,10 @@ export function DropzonePreviewCard({
         </button>
       </div>
       <div className="bg-white p-5 text-black font-black">
-        <h1>{file.name}</h1>
-        <h2>{Math.round(file.size / 1024 / 1024)} MB</h2>
+        <h1 className="text-4xl">{file.name}</h1>
+        <h2 className="text-gray-800">
+          {Math.round(file.size / 1024 / 1024)} MB
+        </h2>
       </div>
     </div>
   );
