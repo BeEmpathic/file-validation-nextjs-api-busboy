@@ -8,6 +8,7 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
+  // - Check if the font is good the way is there
   // - fix the result clean up cause you have to fucking check why the files are uploading when you miss click
   // - Dropezone to do
   // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender
