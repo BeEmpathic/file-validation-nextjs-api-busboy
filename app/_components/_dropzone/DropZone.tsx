@@ -108,14 +108,11 @@ const DropZone = ({
           <h2>
             {draggingWindow
               ? "Drop your files here!"
-              : "You can drop you files here to upload them"}
+              : "You can drop your files here to upload them"}
           </h2>
         </div>
       </label>
-      <div
-        className="flex flex-wrap justify-center"
-        id="dropzone-files-preview"
-      >
+      <div className="" id="dropzone-files-preview">
         {files.length > 0
           ? files.map((file, index) => (
               <DropzonePreviewCard
