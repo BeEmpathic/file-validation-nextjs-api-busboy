@@ -10,7 +10,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-merienda: var(--font-merienda);
+  --font-meri: var(--font-merienda);
+  --font-kal: var(--font-kalam);
 }
 
 @media (prefers-color-scheme: dark) {

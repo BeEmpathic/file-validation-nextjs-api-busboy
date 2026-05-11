@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Merienda } from "next/font/google";
+import { Geist, Geist_Mono, Merienda, Kalam } from "next/font/google";
 import "./globals.css";
+
+const kalam = Kalam({
+  variable: "--font-kalam",
+  subsets: ["latin"],
+  weight: "400",
+});
 
 const merienda = Merienda({
   variable: "--font-merienda",
@@ -30,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${merienda.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
+        className={`${kalam.variable} ${merienda.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
         {children}
       </body>

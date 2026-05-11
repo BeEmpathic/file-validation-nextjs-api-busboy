@@ -2,7 +2,7 @@
 import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
-import { ChangeEvent, useTransition, useState, startTransition } from "react";
+import { ChangeEvent, useTransition, useState } from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 
@@ -58,7 +58,7 @@ export default function Page() {
   }
 
   return (
-    <div className="font-merienda bg-[#1A1953] flex border min-h-dvh flex justify-center items-center p8">
+    <div className="font-meri bg-[#1A1953] flex border min-h-dvh flex justify-center items-center p8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col border p-8 max-w-2xl content-center">
         <form action={onSubmit} className="text-center border p-3">
           <DropZone files={files} setFiles={setFiles} />
@@ -72,8 +72,6 @@ export default function Page() {
           </button>
         </form>
         <DisplayResult result={result} />
-
-        {files[0] && files[0].name}
       </div>
     </div>
   );
