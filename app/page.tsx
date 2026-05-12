@@ -8,6 +8,7 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
+  // - make it so everyone can just run it in their local network
   // - swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
   // - Make so the files are rejected before clicking the upload button
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
