@@ -8,16 +8,12 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Delete unecessery borders
   // - swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
   // - Check if the font is good the way is there
-
-  // - Make so the files from the input and the files from the droping are stored in a variable / array and just pass it to the frontend sender
-  // - go and cry cause suddenly this project is fucking endlesss ;-;
-  // - Maske so the files are rejected before clicking the upload button
-  // / disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
+  // - Make so the files are rejected before clicking the upload button
+  // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
   // - The css for this page not much work but you should do it it's going to be easy and fun
-  // make so validation happens on change instead of on submit
+  // - make so validation happens on change instead of on submit
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
 
