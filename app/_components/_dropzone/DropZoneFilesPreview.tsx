@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 // TODOS !!!!!!!!!!!! Here comes more todos:
-// - Make so when the files name is too long it doesn't make the parent too big
 // - Make so the math rounds with one space after the comma: "," so when something is smaller than 1MB it's not 0MB
 
 export function DropzonePreviewCard({
@@ -45,7 +44,7 @@ export function DropzonePreviewCard({
         </button>
       </div>
       <div className="max-w-full bg-white p-5 text-black font-black">
-        <h1 className="p-3 truncate text-4xl text-wrap">{file.name}</h1>
+        <h1 className="p-3 break-all text-4xl">{file.name}</h1>
         <h2 className="text-gray-800">
           {Math.round(file.size / 1024 / 1024)} MB
         </h2>
