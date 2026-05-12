@@ -8,12 +8,10 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Make hover for the submit button / style the button
   // - swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
-  // - Check if the font is good the way is there
   // - Make so the files are rejected before clicking the upload button
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
-  // - The css for this page not much work but you should do it it's going to be easy and fun
+  // - The css for this page not much work but you should do it it's going to be easy and fun it was :D
   // - make so validation happens on change instead of on submit
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
@@ -66,7 +64,7 @@ export default function Page() {
             className="cursor-pointer text-black bg-white p-2 m-2 rounded-full hover:bg-gray-300 hover:text-white"
             type="submit"
           >
-            {isPending ? "Uploading..." : "Upload"}
+            {isPending ? "Uploading..." : "Upload!"}
           </button>
         </form>
         <DisplayResult result={result} />
