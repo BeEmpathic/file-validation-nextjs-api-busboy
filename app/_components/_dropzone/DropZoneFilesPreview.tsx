@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
 // TODOS !!!!!!!!!!!! Here comes more todos:
-// - Make so the math rounds with one space after the comma: "," so when something is smaller than 1MB it's not 0MB
+// - Add outline to the picture to improve it's visiability
+// - Maybe make so when you press the image remove button it changes color to red it might make it look better on the phones
 
 export function DropzonePreviewCard({
   file,
@@ -29,7 +30,7 @@ export function DropzonePreviewCard({
           <img
             src={preview}
             alt={file.name}
-            className="inset-0 size-full object-cover aspect-square"
+            className="outline-solid inset-0 size-full object-cover aspect-square"
           />
         )}
 
