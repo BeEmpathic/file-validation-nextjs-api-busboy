@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 // TODOS !!!!!!!!!!!! Here comes more todos:
-// - Add outline to the picture to improve it's visiability
 // - Maybe make so when you press the image remove button it changes color to red it might make it look better on the phones
 
 export function DropzonePreviewCard({
@@ -24,7 +23,7 @@ export function DropzonePreviewCard({
   }, [file, isImage]);
 
   return (
-    <div className="border my-5 p-5 rounded-lg bg-sky-500">
+    <div className="my-5 p-5 rounded-lg bg-sky-500">
       <div className="bg-white p-5 relative aspect-square overflow-hidden rounded-t-lg ">
         {preview && (
           <img

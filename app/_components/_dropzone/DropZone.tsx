@@ -8,9 +8,6 @@ import {
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // TODOS!!!:
-// - Work on the cards so the show the file name and file's size
-// - Make the X button for deleting the file better
-// - Think if making the dropzone react to the window dragging was a good idea cause figma's Ai did it with only the div
 // - Work on types so there is no errors
 
 const DropZone = ({
@@ -112,7 +109,7 @@ const DropZone = ({
           </h2>
         </div>
       </label>
-      <div className="" id="dropzone-files-preview">
+      <div id="dropzone-files-preview">
         {files.length > 0
           ? files.map((file, index) => (
               <DropzonePreviewCard
