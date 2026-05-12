@@ -8,6 +8,7 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 export default function Page() {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
+  // - Make hover for the submit button / style the button
   // - swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
   // - Check if the font is good the way is there
   // - Make so the files are rejected before clicking the upload button
@@ -19,7 +20,7 @@ export default function Page() {
 
   const initialResult: returnedInfoType = {
     pass: false,
-    message: "Feed me the files!",
+    message: "Your files's feedback will be here",
     status: 400,
     uploadedFilesNames: [],
     rejectedFiles: [],
@@ -62,10 +63,10 @@ export default function Page() {
           {/*<!-- this dropzone has an input in it */}
           <button
             disabled={isPending}
-            className="cursor-pointer border "
+            className="cursor-pointer text-black bg-white p-2 m-2 rounded-full hover:bg-gray-300 hover:text-white"
             type="submit"
           >
-            {isPending ? "Submitting..." : "Submit"}
+            {isPending ? "Uploading..." : "Upload"}
           </button>
         </form>
         <DisplayResult result={result} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 // TODOS !!!!!!!!!!!! Here comes more todos:
+// - Make remove button and SVG so it looks way better, or maybe fucking look for job instead of doing some endless project which isn't even targeted to have any users
 // - Maybe make so when you press the image remove button it changes color to red it might make it look better on the phones
 
 export function DropzonePreviewCard({

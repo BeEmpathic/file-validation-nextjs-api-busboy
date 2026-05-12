@@ -6,7 +6,7 @@ type DisplayResultProps = {
 
 export default function DisplayResult({ result }: DisplayResultProps) {
   return (
-    <div id="result" className="border">
+    <div id="result">
       {result.error ? (
         <div className="text-red-500">{result.error}</div>
       ) : (
