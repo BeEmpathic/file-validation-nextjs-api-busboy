@@ -8,7 +8,7 @@ import DropZone from "./_components/_dropzone/DropZone";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - clear the uploaded files after upload
+  // - Make scroll to the top button
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
