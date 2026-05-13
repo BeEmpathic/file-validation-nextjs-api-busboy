@@ -100,7 +100,6 @@ const DropZone = ({
             name="files"
             onChange={handleFilesChange}
             hidden
-            accept="image/*"
           />
           <h2>
             {draggingWindow

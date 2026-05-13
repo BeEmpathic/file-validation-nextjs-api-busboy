@@ -51,6 +51,8 @@ const Page = () => {
         ONLY_MEDIA_ALLOWED,
       );
       setResult(response);
+
+      setFiles([]);
     });
   };
 
