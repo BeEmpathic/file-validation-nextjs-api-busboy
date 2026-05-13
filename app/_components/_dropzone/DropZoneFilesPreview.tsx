@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { DocumentIcon } from "@heroicons/react/24/outline";
 // TODOS !!!!!!!!!!!! Here comes more todos:
 // - Make it so when the file is PDF, TXT, DOC, XLS it has an icon of a file
 // - Make remove button and SVG so it looks way better, or maybe fucking look for job instead of doing some endless project which isn't even targeted to have any users
@@ -34,7 +34,7 @@ const DropzonePreviewCard = ({
             className="outline-solid inset-0 size-full object-cover aspect-square"
           />
         ) : (
-          ""
+          <DocumentIcon className="text-black" />
         )}
         {/* change this */}
         <button
