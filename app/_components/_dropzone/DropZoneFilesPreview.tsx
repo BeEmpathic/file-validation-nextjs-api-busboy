@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 // - Make remove button and SVG so it looks way better, or maybe fucking look for job instead of doing some endless project which isn't even targeted to have any users
 // - Maybe make so when you press the image remove button it changes color to red it might make it look better on the phones
 
-export function DropzonePreviewCard({
+const DropzonePreviewCard = ({
   file,
   onRemove,
 }: {
   file: File;
   onRemove: () => void;
-}) {
+}) => {
   const [preview, setPreview] = useState<string | Blob | undefined>("");
   const isImage = file.type.startsWith("image/");
 
@@ -52,4 +52,6 @@ export function DropzonePreviewCard({
       </div>
     </div>
   );
-}
+};
+
+export { DropzonePreviewCard };

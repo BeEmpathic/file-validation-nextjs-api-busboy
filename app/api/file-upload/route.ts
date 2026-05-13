@@ -9,7 +9,7 @@ import {
   headerContentLengthCheck,
 } from "@/_lib/file-upload/file-upload-backend";
 
-export async function POST(req: NextRequest) {
+const POST = async (req: NextRequest) => {
   const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
     ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT)
     : 20;
@@ -57,4 +57,6 @@ export async function POST(req: NextRequest) {
       error: "Something unexpected happened, probably server's fault ;-;",
     });
   }
-}
+};
+
+export { POST };

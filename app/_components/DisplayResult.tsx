@@ -4,7 +4,7 @@ type DisplayResultProps = {
   result: returnedInfoType;
 };
 
-export default function DisplayResult({ result }: DisplayResultProps) {
+const DisplayResult = ({ result }: DisplayResultProps) => {
   return (
     <div id="result">
       {result.error ? (
@@ -31,4 +31,6 @@ export default function DisplayResult({ result }: DisplayResultProps) {
       {}
     </div>
   );
-}
+};
+
+export default DisplayResult;

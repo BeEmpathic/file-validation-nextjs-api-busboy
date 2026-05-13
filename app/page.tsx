@@ -6,11 +6,11 @@ import { ChangeEvent, useTransition, useState } from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 
-export default function Page() {
+const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - make it so everyone can just run it in their local network
-  // - swap all functions to consts cause it should be better to use ;-; I kind of wish I didn't learn that ;-;
+  // - clear the uploaded files after upload
   // - Make so the files are rejected before clicking the upload button
+  // - disable the submit button if the files doesn't pass the validation
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
   // - The css for this page not much work but you should do it it's going to be easy and fun it was :D
   // - make so validation happens on change instead of on submit
@@ -31,7 +31,7 @@ export default function Page() {
 
   const [isPending, startTransition] = useTransition();
 
-  async function onSubmit() {
+  const onSubmit = async () => {
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -52,7 +52,7 @@ export default function Page() {
       );
       setResult(response);
     });
-  }
+  };
 
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
@@ -72,4 +72,6 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;
