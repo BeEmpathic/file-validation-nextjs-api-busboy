@@ -39,7 +39,10 @@ It's app is suppose to be a feature in my other app but It took like 3 months to
 And the cap makes it probably useless for me anyway xD, cause I think that like 15 minutes is a minimal requirement for file upload, and It will take like 6 months to bypass that cause it's so complicated and I don't like to live a project only working I prefer when It meets my standard.
 
 ## The future of the project
+# It's frozen
+
 <img width="699" height="1019" alt="image" src="https://github.com/user-attachments/assets/57339272-3dfe-407b-a8a0-fd5e1065708b" />
+
 The project is frozen for now I go and learn how to do authentication properly in next.js / react.js and comeback here to do file chunking.
 I kind of want to apply for job offers while doing projects cause you never know if you land something and you will have easier access to food thanks to that. I kind of feel that in a programming job you will need to know how to authenticate users.
 
