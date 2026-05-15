@@ -12,7 +12,6 @@ const Page = () => {
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
-  // - The css for this page not much work but you should do it it's going to be easy and fun it was :D
   // - make so validation happens on change instead of on submit
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
