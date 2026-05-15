@@ -5,10 +5,10 @@ import { returnedInfoType } from "@/_types/fileUploadTypes";
 import { ChangeEvent, useTransition, useState } from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
+import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Make scroll to the top button
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
@@ -19,7 +19,7 @@ const Page = () => {
 
   const initialResult: returnedInfoType = {
     pass: false,
-    message: "Your files's feedback will be here",
+    message: "Your files's feedback will be here!",
     status: 400,
     uploadedFilesNames: [],
     rejectedFiles: [],
@@ -72,6 +72,7 @@ const Page = () => {
         </form>
         <DisplayResult result={result} />
       </div>
+      <ScrollTopButton />
     </div>
   );
 };
