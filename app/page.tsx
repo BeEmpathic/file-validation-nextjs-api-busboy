@@ -9,6 +9,7 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
+  // - You have to chunk the files good luck mate!!!
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
   // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
