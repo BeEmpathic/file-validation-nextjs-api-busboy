@@ -6,7 +6,6 @@ This app is able to take care of file upload for you. It doesn't waste your reso
 
 <img width="1550" height="1840" alt="image" src="https://github.com/user-attachments/assets/13999acb-6fa8-4e18-93ea-b307c90f4170" />
 
-
 ## To run project:
 
 ### 1. Install:
@@ -20,31 +19,36 @@ This app is able to take care of file upload for you. It doesn't waste your reso
 Inside the unpacked folder with the porject run:
 
 This installs the packages:
+
 ```bash
 npm i
 ```
 
 then start the dev server:
+
 ```bash
 npm run dev
 ```
+
 you can do production server, but it's up to you.
 
 ## Disclaimer
+
 This app has 5 minutes sending time cap on it, cause this is what timeout your browser is setting on you. To work around it you would have to chunk the file keep track of it and do some other crazy stuff. It will be added it in the future like next year.
 
 ## Additonal info
+
 It uses busyboy cause this lib is incredibly good. I don't think that I could work on the filestream better than it does.
-It's app is suppose to be a feature in my other app but It took like 3 months to develop and the main project took like 1 month to do xD, so this is kind of deep side project / feature xD. 
+It's app is suppose to be a feature in my other app but It took like 3 months to develop and the main project took like 1 month to do xD, so this is kind of deep side project / feature xD.
 And the cap makes it probably useless for me anyway xD, cause I think that like 15 minutes is a minimal requirement for file upload, and It will take like 6 months to bypass that cause it's so complicated and I don't like to live a project only working I prefer when It meets my standard.
 
 ## The future of the project
+
 # It's frozen
 
 <img width="699" height="1019" alt="image" src="https://github.com/user-attachments/assets/57339272-3dfe-407b-a8a0-fd5e1065708b" />
 
-The project is frozen for now I go and learn how to do authentication properly in next.js / react.js and comeback here to do file chunking.
-I kind of want to apply for job offers while doing projects cause you never know if you land something and you will have easier access to food thanks to that. I kind of feel that in a programming job you will need to know how to authenticate users.
+I came back. The project is now under heavy develpoment so sometimes it might not work on the latest version
+If I won't finish it that means that I lost in my life ;-;. I hope that I rather die.
 
-The plan is to comeback here in time of one year so If I didn't came back that means that something happend or I got a job or I failed in my life ;-;.
-
+![alt text](image.png)
