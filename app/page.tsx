@@ -9,7 +9,7 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Make so every file is a different connection
+  // - Make so every file is a different connection, you should use promises ;-; for the files
   // - Make so the files start to upload instanly after you add them
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
   // - Make so the files are rejected before clicking the upload button
