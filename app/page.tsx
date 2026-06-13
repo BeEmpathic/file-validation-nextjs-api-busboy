@@ -2,14 +2,14 @@
 import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
-import { ChangeEvent, useTransition, useState } from "react";
+import { ChangeEvent, useTransition, useState, useEffect } from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-
+  // - Make so you get the result correctly now you don't get it at all I mean that the over all error message isn't showing up I don't know if you show why a file is not good
   // - Make so the files start to upload instanly after you add them
   // - you deleted the file amount check get it back later
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
@@ -24,8 +24,8 @@ const Page = () => {
     pass: false,
     message: "Your files's feedback will be here!",
     status: 400,
-    uploadedFilesInfo: [],
-    rejectedFilesInfo: [],
+    uploadedFilesNames: [],
+    rejectedFiles: [],
     error: "",
   };
 
@@ -48,13 +48,25 @@ const Page = () => {
         process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
       // make it const
-      let response;
 
+      const uploadedFiles = [];
+      const rejectedFiles = [];
       for (const file of files) {
-        response = await fileUpload(file, FILE_MAX_SIZE, ONLY_MEDIA_ALLOWED);
+        const response = await fileUpload(
+          file,
+          FILE_MAX_SIZE,
+          ONLY_MEDIA_ALLOWED,
+        );
+        if (!response.error) uploadedFiles.push(response.uploadedFilesNames[0]);
+        if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
+        console.log(response);
       }
+      const response = initialResult;
+      response?.uploadedFilesNames.push(...uploadedFiles);
+      response?.rejectedFiles.push(...rejectedFiles);
 
       setResult(response);
+      console.log("The response:", response);
 
       setFiles([]);
     });
