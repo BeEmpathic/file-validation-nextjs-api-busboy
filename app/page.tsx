@@ -9,8 +9,9 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Make so every file is a different connection, you should use promises ;-; for the files
+
   // - Make so the files start to upload instanly after you add them
+  // - you deleted the file amount check get it back later
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
@@ -23,8 +24,8 @@ const Page = () => {
     pass: false,
     message: "Your files's feedback will be here!",
     status: 400,
-    uploadedFilesNames: [],
-    rejectedFiles: [],
+    uploadedFilesInfo: [],
+    rejectedFilesInfo: [],
     error: "",
   };
 
@@ -46,12 +47,13 @@ const Page = () => {
       const ONLY_MEDIA_ALLOWED: boolean =
         process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-      const response: returnedInfoType = await fileUpload(
-        files,
-        FILES_MAX_AMOUNT,
-        FILE_MAX_SIZE,
-        ONLY_MEDIA_ALLOWED,
-      );
+      // make it const
+      let response;
+
+      for (const file of files) {
+        response = await fileUpload(file, FILE_MAX_SIZE, ONLY_MEDIA_ALLOWED);
+      }
+
       setResult(response);
 
       setFiles([]);

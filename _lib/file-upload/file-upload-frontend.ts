@@ -52,14 +52,14 @@ export async function fileUpload(
 
       const validation = checkFile(file, fileSizeLimit, onlyMedia);
       if (validation === true) {
-        formData.append("files", file);
+        formData.append("file", file);
       } else {
         result.rejectedFiles.push(validation);
       }
 
       // check if there was no errors / i did set the result.pass to false if so return result hopefully wtih some error
       if (!result.pass) {
-        return result;
+        reject(result);
       }
 
       const response = await fetch("/api/file-upload", {
@@ -68,14 +68,14 @@ export async function fileUpload(
       });
 
       if (!response.ok) {
-        return result;
+        reject(result);
       }
 
       // this overwrites entier resultat you should do it wiht const instead of let somehow
       // The response retruned to the user
       result = await response.json();
 
-      return result;
+      resolve(result);
 
       // there is type of any on error check if you can do something about it.
     } catch (e: any) {
@@ -85,7 +85,7 @@ export async function fileUpload(
         "Something went wrong! We got unusual error. Probably server";
 
       result.pass = false;
-      return result;
+      reject(result);
     }
   });
 }
