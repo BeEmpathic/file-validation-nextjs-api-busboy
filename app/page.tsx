@@ -9,7 +9,8 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - Make so you get the result correctly now you don't get it at all I mean that the over all error message isn't showing up I don't know if you show why a file is not good
+  // - Make so you get the result correctly now you don't get it at all I mean that the over all
+  //  error message isn't showing up I don't know if you show why a file is not good
   // - Make so the files start to upload instanly after you add them
   // - you deleted the file amount check get it back later
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
@@ -52,18 +53,24 @@ const Page = () => {
       const uploadedFiles = [];
       const rejectedFiles = [];
       for (const file of files) {
-        const response = await fileUpload(
-          file,
-          FILE_MAX_SIZE,
-          ONLY_MEDIA_ALLOWED,
-        );
-        if (!response.error) uploadedFiles.push(response.uploadedFilesNames[0]);
-        if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
-        console.log(response);
+        try {
+          const response = await fileUpload(
+            file,
+            FILE_MAX_SIZE,
+            ONLY_MEDIA_ALLOWED,
+          );
+          if (!response.error)
+            uploadedFiles.push(response.uploadedFilesNames[0]);
+          if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
+          console.log(response);
+        } catch (err) {
+          console.error(err);
+          result.error = "Something went wrong, maybe try again?";
+        }
       }
       const response = initialResult;
       response?.uploadedFilesNames.push(...uploadedFiles);
-      response?.rejectedFiles.push(...rejectedFiles);
+      // response?.rejectedFiles.push(...rejectedFiles);
 
       setResult(response);
       console.log("The response:", response);
