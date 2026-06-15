@@ -52,6 +52,10 @@ const Page = () => {
 
       const uploadedFiles = [];
       const rejectedFiles = [];
+      if (files.length > FILES_MAX_AMOUNT) {
+        // make so it gives you an error instead of doing nothing ;-;
+        return;
+      }
       for (const file of files) {
         try {
           const response = await fileUpload(
