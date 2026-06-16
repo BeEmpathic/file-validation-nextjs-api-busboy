@@ -70,9 +70,9 @@ const Page = () => {
             uploadedFiles.push(response.uploadedFilesNames[0]);
           if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
           console.log(response);
-        } catch (err) {
+        } catch (err: any | FileValidationError) {
           if (err instanceof FileValidationError) {
-            return result;
+            setResult(err);
           }
           result.error = "Something went wrong, maybe try again?";
         }
