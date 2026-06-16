@@ -1,5 +1,8 @@
 "use client";
-import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
+import {
+  fileUpload,
+  FileValidationError,
+} from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, useEffect } from "react";
@@ -68,7 +71,9 @@ const Page = () => {
           if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
           console.log(response);
         } catch (err) {
-          console.error(err);
+          if (err instanceof FileValidationError) {
+            return result;
+          }
           result.error = "Something went wrong, maybe try again?";
         }
       }

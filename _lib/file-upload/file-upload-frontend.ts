@@ -1,5 +1,22 @@
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
+export class FileValidationError extends Error {
+  result: returnedInfoType;
+  constructor(result: returnedInfoType) {
+    super(result.error);
+
+    this.name = "ValidationError";
+    this.result = {
+      pass: false,
+      message: "Something is not right with validation error class",
+      status: 400,
+      uploadedFilesNames: [],
+      rejectedFiles: [],
+      error: "Unknow validation error",
+    };
+  }
+}
+
 function checkFile(
   file: File,
   fileSizeLimit: number = 5 * 1024 * 1024,
@@ -47,7 +64,7 @@ export async function fileUpload(
       result.pass = false;
       result.error = "No files selected!";
 
-      reject(result);
+      reject(new FileValidationError(result));
     }
     try {
       const formData = new FormData();
@@ -77,8 +94,8 @@ export async function fileUpload(
 
       // there is type of any on error check if you can do something about it.
     } catch (e: any) {
-      console.log("error happened: ");
-      console.error(e);
+      console.error("error happened: ", e);
+
       result.error =
         "Something went wrong! We got unusual error. Probably server";
 
