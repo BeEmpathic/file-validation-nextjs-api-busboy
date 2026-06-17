@@ -12,8 +12,10 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
+  // - I think that errors don't show up cause the website refreshes after you click the upload button
   // - Make so you get the result correctly now you don't get it at all I mean that the over all
   //  error message isn't showing up I don't know if you show why a file is not good
+
   // - Make so the files start to upload instanly after you add them
   // - you deleted the file amount check get it back later
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
@@ -38,7 +40,8 @@ const Page = () => {
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
     startTransition(async () => {
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -66,24 +69,27 @@ const Page = () => {
             FILE_MAX_SIZE,
             ONLY_MEDIA_ALLOWED,
           );
-          if (!response.error)
-            uploadedFiles.push(response.uploadedFilesNames[0]);
-          if (response.error) rejectedFiles.push(response.rejectedFiles[0]);
-          console.log(response);
-        } catch (err: any | FileValidationError) {
-          if (err instanceof FileValidationError) {
-            setResult(err);
+          console.log("The response after fetching it", response);
+
+          uploadedFiles.push(response.uploadedFilesNames[0]);
+
+          console.log("Only the normal stuff ran", response);
+        } catch (err: any) {
+          console.log("Result in the catch:", result);
+          console.log("the error", err);
+          if (err && err.rejectedFiles) {
+            rejectedFiles.push(err.rejectedFiles[0]);
           }
-          result.error = "Something went wrong, maybe try again?";
+          if (err && !err.rejectedFiles)
+            result.error = "Something went wrong, maybe try again?";
         }
       }
-      const response = initialResult;
-      response?.uploadedFilesNames.push(...uploadedFiles);
-      // response?.rejectedFiles.push(...rejectedFiles);
-
-      setResult(response);
-      console.log("The response:", response);
-
+      setResult({
+        ...result,
+        uploadedFilesNames: uploadedFiles,
+        rejectedFiles: rejectedFiles,
+      });
+      console.log("The result:", result);
       setFiles([]);
     });
   };
@@ -91,7 +97,7 @@ const Page = () => {
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
-        <form action={onSubmit} className="text-center p-3">
+        <form onSubmit={onSubmit} className="text-center p-3">
           <DropZone files={files} setFiles={setFiles} />
           {/*<!-- this dropzone has an input in it */}
           <button

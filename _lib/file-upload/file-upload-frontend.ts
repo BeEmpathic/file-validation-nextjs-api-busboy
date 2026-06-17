@@ -64,7 +64,7 @@ export async function fileUpload(
       result.pass = false;
       result.error = "No files selected!";
 
-      reject(new FileValidationError(result));
+      reject(result);
     }
     try {
       const formData = new FormData();
@@ -74,6 +74,9 @@ export async function fileUpload(
         formData.append("file", file);
       } else {
         result.rejectedFiles.push(validation);
+        result.error = "File didn't pass validation!";
+        result.pass = false;
+
         reject(result);
       }
 
