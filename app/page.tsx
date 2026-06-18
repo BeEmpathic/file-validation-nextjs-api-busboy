@@ -40,9 +40,9 @@ const Page = () => {
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     startTransition(async () => {
+      setResult(initialResult);
       // variables for the limits from env processed
       const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
         ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
@@ -56,8 +56,10 @@ const Page = () => {
 
       // make it const
 
-      const uploadedFiles = [];
-      const rejectedFiles = [];
+      const uploadedFiles = [] as string[];
+      const rejectedFiles = [] as { fileName: string; reason: string }[];
+      let resultMessage = [];
+      let resultError = [];
       if (files.length > FILES_MAX_AMOUNT) {
         // make so it gives you an error instead of doing nothing ;-;
         return;
@@ -69,8 +71,18 @@ const Page = () => {
             FILE_MAX_SIZE,
             ONLY_MEDIA_ALLOWED,
           );
-          console.log("The response after fetching it", response);
 
+          setResult((prevState) => ({
+            ...prevState,
+            message: response.message,
+            status: response.status,
+            uploadedFilesNames: [
+              ...uploadedFiles,
+              ...response.uploadedFilesNames,
+            ],
+            rejectedFiles: response.rejectedFiles,
+            error: response.error,
+          }));
           uploadedFiles.push(response.uploadedFilesNames[0]);
 
           console.log("Only the normal stuff ran", response);
@@ -78,17 +90,27 @@ const Page = () => {
           console.log("Result in the catch:", result);
           console.log("the error", err);
           if (err && err.rejectedFiles) {
-            rejectedFiles.push(err.rejectedFiles[0]);
+            setResult((prevState) => ({
+              ...prevState,
+              message: err.message,
+              status: err.status,
+              rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
+              error: err.error,
+            }));
           }
           if (err && !err.rejectedFiles)
-            result.error = "Something went wrong, maybe try again?";
+            setResult((prevState) => ({
+              ...prevState,
+              message: err.message,
+              status: err.status,
+              uploadedFilesNames: [],
+              rejectedFiles: [],
+              error: err.error,
+            }));
+          result.error = "Something went wrong, maybe try again?";
         }
       }
-      setResult({
-        ...result,
-        uploadedFilesNames: uploadedFiles,
-        rejectedFiles: rejectedFiles,
-      });
+
       console.log("The result:", result);
       setFiles([]);
     });
@@ -97,7 +119,7 @@ const Page = () => {
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
-        <form onSubmit={onSubmit} className="text-center p-3">
+        <form action={onSubmit} className="text-center p-3">
           <DropZone files={files} setFiles={setFiles} />
           {/*<!-- this dropzone has an input in it */}
           <button
