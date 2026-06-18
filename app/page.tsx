@@ -56,10 +56,6 @@ const Page = () => {
 
       // make it const
 
-      const uploadedFiles = [] as string[];
-      const rejectedFiles = [] as { fileName: string; reason: string }[];
-      let resultMessage = [];
-      let resultError = [];
       if (files.length > FILES_MAX_AMOUNT) {
         // make so it gives you an error instead of doing nothing ;-;
         return;
@@ -77,13 +73,12 @@ const Page = () => {
             message: response.message,
             status: response.status,
             uploadedFilesNames: [
-              ...uploadedFiles,
+              ...prevState.uploadedFilesNames,
               ...response.uploadedFilesNames,
             ],
             rejectedFiles: response.rejectedFiles,
             error: response.error,
           }));
-          uploadedFiles.push(response.uploadedFilesNames[0]);
 
           console.log("Only the normal stuff ran", response);
         } catch (err: any) {
