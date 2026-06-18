@@ -12,9 +12,8 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
-  // - I think that errors don't show up cause the website refreshes after you click the upload button
-  // - Make so you get the result correctly now you don't get it at all I mean that the over all
-  //  error message isn't showing up I don't know if you show why a file is not good
+
+  // - Move the code from main file to the front-end file if you are able to.
 
   // - Make so the files start to upload instanly after you add them
   // - you deleted the file amount check get it back later
@@ -79,11 +78,7 @@ const Page = () => {
             rejectedFiles: response.rejectedFiles,
             error: response.error,
           }));
-
-          console.log("Only the normal stuff ran", response);
         } catch (err: any) {
-          console.log("Result in the catch:", result);
-          console.log("the error", err);
           if (err && err.rejectedFiles) {
             setResult((prevState) => ({
               ...prevState,
@@ -106,7 +101,6 @@ const Page = () => {
         }
       }
 
-      console.log("The result:", result);
       setFiles([]);
     });
   };
