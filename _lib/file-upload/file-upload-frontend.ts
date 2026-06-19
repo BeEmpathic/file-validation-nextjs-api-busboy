@@ -1,4 +1,14 @@
 import { returnedInfoType } from "@/_types/fileUploadTypes";
+// variables for the limits from env processed
+const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
+  ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
+  : 10;
+const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
+  ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE, 10) * 1024 * 1024
+  : 5 * 1024 * 1024; // in MB
+
+const ONLY_MEDIA_ALLOWED: boolean =
+  process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
 export class FileValidationError extends Error {
   result: returnedInfoType;
@@ -19,8 +29,9 @@ export class FileValidationError extends Error {
 
 function checkFile(
   file: File,
-  fileSizeLimit: number = 5 * 1024 * 1024,
-  onlyMedia: boolean = false,
+  filesAmount: number = FILES_MAX_AMOUNT,
+  fileSizeLimit: number = FILES_MAX_AMOUNT,
+  onlyMedia: boolean = ONLY_MEDIA_ALLOWED,
 ):
   | {
       fileName: string;
@@ -47,29 +58,36 @@ function checkFile(
 }
 
 export async function fileUpload(
-  file: File,
+  files: File[],
   fileSizeLimit: number = 5 * 1024 * 1024,
   onlyMedia: boolean = false,
 ) {
   return new Promise<returnedInfoType>(async (resolve, reject) => {
-    let result: returnedInfoType = {
-      pass: true,
+    const result: returnedInfoType = {
+      pass: false,
       message: "Something is wrong",
       status: 400,
       uploadedFilesNames: [],
       rejectedFiles: [],
       error: "",
     };
-    if (!file) {
+    if (!files || files.length >= 0) {
       result.pass = false;
       result.error = "No files selected!";
 
       reject(result);
     }
-    try {
+    const response = () =>  {
+      for(const file of files) {
+      try {
       const formData = new FormData();
 
-      const validation = checkFile(file, fileSizeLimit, onlyMedia);
+      const validation = checkFile(
+        file,
+        fileSizeLimit,
+        FILES_MAX_AMOUNT,
+        onlyMedia,
+      );
       if (validation === true) {
         formData.append("file", file);
       } else {
@@ -80,22 +98,26 @@ export async function fileUpload(
         reject(result);
       }
 
-      const response = await fetch("/api/file-upload", {
+      const response = 
+        await fetch("/api/file-upload", {
         method: "POST",
         body: formData,
-      });
+      })
 
-      if (!response.ok) {
+       if (!response.ok) {
         reject(result);
       }
+      const backendData = await response.json();
+      
+      result.message = backendData.message;
+      result.status = backendData.status;
+      result.uploadedFilesNames.push(backendData.uploadedFilesNames);
+      result.error = backendData.error;
+      result.pass = backendData.pass;
+      
 
-      // this overwrites entier result you should do it wiht const instead of let somehow
-      // The response retruned to the user
-      result = await response.json();
+      return response;
 
-      resolve(result);
-
-      // there is type of any on error check if you can do something about it.
     } catch (e: any) {
       console.error("error happened: ", e);
 
@@ -104,6 +126,24 @@ export async function fileUpload(
 
       result.pass = false;
       reject(result);
+      return response; 
     }
+    
+
+  
+  } 
+
+
+
+     
+      // this overwrites entier result you should do it wiht const instead of let somehow
+      // The response retruned to the user
+      result = await response.json();
+
+
+      resolve(result);
+
+      // there is type of any on error check if you can do something about it.
+
   });
 }

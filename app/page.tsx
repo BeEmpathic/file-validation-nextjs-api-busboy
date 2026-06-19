@@ -42,63 +42,33 @@ const Page = () => {
   const onSubmit = async () => {
     startTransition(async () => {
       setResult(initialResult);
-      // variables for the limits from env processed
-      const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
-        ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
-        : 10;
-      const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
-        ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE, 10) * 1024 * 1024
-        : 5 * 1024 * 1024; // in MB
 
-      const ONLY_MEDIA_ALLOWED: boolean =
-        process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
+      try {
+        const response = await fileUpload(files);
 
-      // make it const
-
-      if (files.length > FILES_MAX_AMOUNT) {
-        // make so it gives you an error instead of doing nothing ;-;
-        return;
-      }
-      for (const file of files) {
-        try {
-          const response = await fileUpload(
-            file,
-            FILE_MAX_SIZE,
-            ONLY_MEDIA_ALLOWED,
-          );
-
+        setResult((prevState) => ({
+          ...prevState,
+          message: response.message,
+          status: response.status,
+          uploadedFilesNames: [
+            ...prevState.uploadedFilesNames,
+            ...response.uploadedFilesNames,
+          ],
+          rejectedFiles: response.rejectedFiles,
+          error: response.error,
+        }));
+      } catch (err: any) {
+        if (err && err.rejectedFiles.lenght > 0) {
           setResult((prevState) => ({
             ...prevState,
-            message: response.message,
-            status: response.status,
-            uploadedFilesNames: [
-              ...prevState.uploadedFilesNames,
-              ...response.uploadedFilesNames,
-            ],
-            rejectedFiles: response.rejectedFiles,
-            error: response.error,
+            message: err.message,
+            status: err.status,
+            rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
+            error: err.error,
           }));
-        } catch (err: any) {
-          if (err && err.rejectedFiles) {
-            setResult((prevState) => ({
-              ...prevState,
-              message: err.message,
-              status: err.status,
-              rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
-              error: err.error,
-            }));
-          }
-          if (err && !err.rejectedFiles)
-            setResult((prevState) => ({
-              ...prevState,
-              message: err.message,
-              status: err.status,
-              uploadedFilesNames: [],
-              rejectedFiles: [],
-              error: err.error,
-            }));
-          result.error = "Something went wrong, maybe try again?";
         }
+
+        return;
       }
 
       setFiles([]);
