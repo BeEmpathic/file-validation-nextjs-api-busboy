@@ -58,7 +58,7 @@ const Page = () => {
           error: response.error,
         }));
       } catch (err: any) {
-        if (err && err.rejectedFiles.lenght > 0) {
+        if (err && err.error) {
           setResult((prevState) => ({
             ...prevState,
             message: err.message,
@@ -67,10 +67,8 @@ const Page = () => {
             error: err.error,
           }));
         }
-
-        return;
       }
-
+      console.log("The result at the page.tsx:", result);
       setFiles([]);
     });
   };

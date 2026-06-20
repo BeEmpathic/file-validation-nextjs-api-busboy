@@ -71,79 +71,67 @@ export async function fileUpload(
       rejectedFiles: [],
       error: "",
     };
-    if (!files || files.length >= 0) {
+    if (!files || files.length <= 0) {
       result.pass = false;
       result.error = "No files selected!";
-
+      console.log("Result when no files selected:", result);
       reject(result);
     }
-    const response = () =>  {
-      for(const file of files) {
-      try {
-      const formData = new FormData();
 
-      const validation = checkFile(
-        file,
-        fileSizeLimit,
-        FILES_MAX_AMOUNT,
-        onlyMedia,
-      );
-      if (validation === true) {
-        formData.append("file", file);
-      } else {
-        result.rejectedFiles.push(validation);
-        result.error = "File didn't pass validation!";
-        result.pass = false;
+    const response = async () => {
+      for (const file of files) {
+        try {
+          const formData = new FormData();
 
-        reject(result);
+          const validation = checkFile(
+            file,
+            fileSizeLimit,
+            FILES_MAX_AMOUNT,
+            onlyMedia,
+          );
+          if (validation === true) {
+            formData.append("file", file);
+          } else {
+            result.rejectedFiles.push(validation);
+            result.error = "File didn't pass validation!";
+            result.pass = false;
+
+            reject(result);
+          }
+
+          const response = await fetch("/api/file-upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            reject(result);
+          }
+          const backendData = await response.json();
+
+          result.message = backendData.message;
+          result.status = backendData.status; // this overwrites the status it's a problem
+          result.uploadedFilesNames.push(backendData.uploadedFilesNames);
+          result.rejectedFiles.push(backendData.rejectedFiles);
+          result.error = backendData.error;
+          result.pass = backendData.pass;
+
+          return response;
+        } catch (e: any) {
+          console.error("error happened: ", e);
+
+          result.error =
+            "Something went wrong! We got unusual error. Probably server";
+
+          result.pass = false;
+          reject(result);
+          return response;
+        }
       }
-
-      const response = 
-        await fetch("/api/file-upload", {
-        method: "POST",
-        body: formData,
-      })
-
-       if (!response.ok) {
-        reject(result);
-      }
-      const backendData = await response.json();
-      
-      result.message = backendData.message;
-      result.status = backendData.status;
-      result.uploadedFilesNames.push(backendData.uploadedFilesNames);
-      result.error = backendData.error;
-      result.pass = backendData.pass;
-      
-
-      return response;
-
-    } catch (e: any) {
-      console.error("error happened: ", e);
-
-      result.error =
-        "Something went wrong! We got unusual error. Probably server";
-
-      result.pass = false;
-      reject(result);
-      return response; 
-    }
-    
-
-  
-  } 
-
-
-
-     
-      // this overwrites entier result you should do it wiht const instead of let somehow
-      // The response retruned to the user
-      result = await response.json();
-
-
-      resolve(result);
 
       // there is type of any on error check if you can do something about it.
 
+      resolve(result);
+    };
   });
 }
