@@ -7,8 +7,6 @@ const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
   ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE) * 1024 * 1024
   : 5 * 1024 * 1024; // in MB
 
-console.log(FILE_MAX_SIZE);
-
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
@@ -88,14 +86,12 @@ export async function fileUpload(files: File[]) {
           result.pass = backendData.pass;
           result.error = backendData.error;
           result.status = backendData.status;
-          console.log("the backend erorr");
         }
-        console.log("before pushing the files in");
+
         result.message = backendData.message;
         result.pass = backendData.pass;
         result.status = backendData.status;
-        // the backend returns an array of file's names so,
-        // you have to deal with that somehow xD
+
         result.uploadedFilesNames.push(backendData.uploadedFilesNames[0]);
         result.rejectedFiles.push(backendData.rejectedFiles);
       } catch (e: any) {

@@ -54,12 +54,7 @@ const Page = () => {
           rejectedFiles: response.rejectedFiles,
           error: response.error,
         }));
-        console.log("The result instantly after the upload:", result);
       } catch (err: any) {
-        console.log(
-          "The error happened in the page.tsx look at the document",
-          err,
-        );
         if (err && err.error) {
           setResult((prevState) => ({
             ...prevState,
@@ -70,7 +65,7 @@ const Page = () => {
           }));
         }
       }
-      console.log("The result at the page.tsx:", result);
+
       setFiles([]);
     });
   };
