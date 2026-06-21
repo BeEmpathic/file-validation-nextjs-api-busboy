@@ -10,14 +10,13 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - Move the code from main file to the front-end file if you are able to.
-
+  // - fix mp4 files upload
   // - Make so the files start to upload instanly after you add them
-  // - you deleted the file amount check get it back later
+
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
   // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
-  // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah
+  // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah oh me why why  you had this good idea, the frontend validation should happen before pressing the button I guess ;-;
   // - make so validation happens on change instead of on submit
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
