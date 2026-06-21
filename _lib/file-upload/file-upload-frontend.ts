@@ -94,7 +94,9 @@ export async function fileUpload(files: File[]) {
         result.message = backendData.message;
         result.pass = backendData.pass;
         result.status = backendData.status;
-        result.uploadedFilesNames.push(backendData.uploadedFilesNames);
+        // the backend returns an array of file's names so,
+        // you have to deal with that somehow xD
+        result.uploadedFilesNames.push(backendData.uploadedFilesNames[0]);
         result.rejectedFiles.push(backendData.rejectedFiles);
       } catch (e: any) {
         console.error("error happened: ", e);
