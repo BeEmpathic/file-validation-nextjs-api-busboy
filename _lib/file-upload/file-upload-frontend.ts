@@ -12,23 +12,6 @@ console.log(FILE_MAX_SIZE);
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-export class FileValidationError extends Error {
-  result: returnedInfoType;
-  constructor(result: returnedInfoType) {
-    super(result.error);
-
-    this.name = "ValidationError";
-    this.result = {
-      pass: false,
-      message: "Something is not right with validation error class",
-      status: 400,
-      uploadedFilesNames: [],
-      rejectedFiles: [],
-      error: "Unknow validation error",
-    };
-  }
-}
-
 function checkFile(
   file: File,
   filesAmount: number = FILES_MAX_AMOUNT,
@@ -60,20 +43,16 @@ function checkFile(
   return true;
 }
 
-export async function fileUpload(
-  files: File[],
-  fileSizeLimit: number = 5 * 1024 * 1024,
-  onlyMedia: boolean = false,
-) {
+export async function fileUpload(files: File[]) {
+  const result: returnedInfoType = {
+    pass: false,
+    message: "Something is wrong",
+    status: 400,
+    uploadedFilesNames: [],
+    rejectedFiles: [],
+    error: "",
+  };
   return new Promise<returnedInfoType>(async (resolve, reject) => {
-    const result: returnedInfoType = {
-      pass: false,
-      message: "Something is wrong",
-      status: 400,
-      uploadedFilesNames: [],
-      rejectedFiles: [],
-      error: "",
-    };
     if (!files || files.length <= 0) {
       result.pass = false;
       result.error = "No files selected!";
@@ -85,20 +64,14 @@ export async function fileUpload(
       try {
         const formData = new FormData();
 
-        const validation = await checkFile(
-          file,
-          FILES_MAX_AMOUNT,
-          FILE_MAX_SIZE,
-          onlyMedia,
-        );
+        const validation = checkFile(file);
         if (validation === true) {
           formData.append("file", file);
         } else {
+          console.log("The validation result: ", validation);
           result.rejectedFiles.push(validation);
           result.error = "File didn't pass validation!";
           result.pass = false;
-
-          reject(result);
         }
 
         const response = await fetch("/api/file-upload", {
@@ -110,13 +83,19 @@ export async function fileUpload(
           reject(result);
         }
         const backendData = await response.json();
-
+        if (backendData.error) {
+          result.message = backendData.message;
+          result.pass = backendData.pass;
+          result.error = backendData.error;
+          result.status = backendData.status;
+          console.log("the backend erorr");
+        }
+        console.log("before pushing the files in");
         result.message = backendData.message;
-        result.status = backendData.status; // this overwrites the status it's a problem
+        result.pass = backendData.pass;
+        result.status = backendData.status;
         result.uploadedFilesNames.push(backendData.uploadedFilesNames);
         result.rejectedFiles.push(backendData.rejectedFiles);
-        result.error = backendData.error;
-        result.pass = backendData.pass;
       } catch (e: any) {
         console.error("error happened: ", e);
 
@@ -126,6 +105,11 @@ export async function fileUpload(
         result.pass = false;
         reject(result);
       }
+    }
+
+    if (!result.pass) {
+      console.log("the result.pass wasn't true");
+      reject(result);
     }
 
     // there is type of any on error check if you can do something about it.

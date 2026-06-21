@@ -1,8 +1,5 @@
 "use client";
-import {
-  fileUpload,
-  FileValidationError,
-} from "@/_lib/file-upload/file-upload-frontend";
+import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, useEffect } from "react";
@@ -44,8 +41,8 @@ const Page = () => {
       setResult(initialResult);
 
       try {
+        // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
         const response = await fileUpload(files);
-
         setResult((prevState) => ({
           ...prevState,
           message: response.message,
@@ -57,7 +54,12 @@ const Page = () => {
           rejectedFiles: response.rejectedFiles,
           error: response.error,
         }));
+        console.log("The result instantly after the upload:", result);
       } catch (err: any) {
+        console.log(
+          "The error happened in the page.tsx look at the document",
+          err,
+        );
         if (err && err.error) {
           setResult((prevState) => ({
             ...prevState,
