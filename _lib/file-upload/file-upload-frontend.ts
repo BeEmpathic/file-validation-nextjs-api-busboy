@@ -1,3 +1,4 @@
+"use client";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 // variables for the limits from env processed
 const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
@@ -10,7 +11,7 @@ const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-function checkFile(
+export const checkFile = (
   file: File,
   filesAmount: number = FILES_MAX_AMOUNT,
   fileSizeLimit: number = FILE_MAX_SIZE,
@@ -20,7 +21,7 @@ function checkFile(
       fileName: string;
       reason: string;
     }
-  | true {
+  | true => {
   console.log("The size of the file", file.size);
   if (file.size > fileSizeLimit) {
     return {
@@ -39,7 +40,7 @@ function checkFile(
   }
 
   return true;
-}
+};
 
 export async function fileUpload(files: File[]) {
   const result: returnedInfoType = {
@@ -66,7 +67,6 @@ export async function fileUpload(files: File[]) {
         if (validation === true) {
           formData.append("file", file);
         } else {
-          console.log("The validation result: ", validation);
           result.rejectedFiles.push(validation);
           result.error = "File didn't pass validation!";
           result.pass = false;

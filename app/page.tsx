@@ -1,5 +1,5 @@
 "use client";
-import { fileUpload } from "@/_lib/file-upload/file-upload-frontend";
+import { fileUpload, checkFile } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, useEffect } from "react";
@@ -10,13 +10,15 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - fix mp4 files upload
+  // - Make so it auto deleteds / filters the file which didn't pass the validation
+  // - Past the result and setResult to the file-upload-frontend.ts it should make it more smooth
+  // - Make so the files are rejected before clicking the upload button
+  // - fix mp4 files upload, maybe you turned off the server and then tried to youload so this is why it crashed
   // - Make so the files start to upload instanly after you add them
 
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
-  // - Make so the files are rejected before clicking the upload button
   // - disable the submit button if the files doesn't pass the validation
-  // - disable the upload button if the file isn't matching the validatoin so you probably have to extract the validation now hahah oh me why why  you had this good idea, the frontend validation should happen before pressing the button I guess ;-;
+  // - disable the upload button if the file isn't matching the validatoin so you probably you had this good idea, the frontend validation should happen before pressing the button I guess ;-;
   // - make so validation happens on change instead of on submit
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
@@ -34,6 +36,24 @@ const Page = () => {
   const [files, setFiles] = useState<File[]>([]);
 
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setResult(initialResult);
+    files.map((file) => {
+      const validation = checkFile(file);
+      if (validation === true) {
+      } else {
+        setResult((prevState) => ({
+          ...prevState,
+          rejectedFiles: [...prevState.rejectedFiles, validation],
+          error: "File didn't pass validation!",
+        }));
+        result.rejectedFiles.push(validation);
+        result.error = "File didn't pass validation!";
+        result.pass = false;
+      }
+    });
+  }, [files]);
 
   const onSubmit = async () => {
     startTransition(async () => {
