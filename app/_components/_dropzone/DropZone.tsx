@@ -9,6 +9,8 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // TODOS!!!:
 // - Work on types so there is no errors
+// - I think you should read that code and check if you can optimize it and simpilify it
+// remember you are neverfinishing this project
 
 const DropZone = ({
   files,
