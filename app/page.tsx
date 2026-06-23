@@ -39,9 +39,13 @@ const Page = () => {
 
   useEffect(() => {
     setResult(initialResult);
-    files.map((file) => {
+    if (!files || files.length === 0) {
+      return;
+    }
+    files.forEach((file) => {
       const validation = checkFile(file);
       if (validation === true) {
+        return;
       } else {
         setResult((prevState) => ({
           ...prevState,
@@ -54,6 +58,24 @@ const Page = () => {
       }
     });
   }, [files]);
+
+  useEffect(() => {
+    if (!files || files.length === 0) {
+      return;
+    }
+    setFiles((prevState) => {
+      console.log("How the prevState looks like:", prevState);
+      console.log(
+        "The rejected files in the second useEffect",
+        result.rejectedFiles,
+      );
+      return {
+        ...prevState.filter(
+          (file, index) => result.rejectedFiles[0].fileName !== file.name,
+        ),
+      };
+    });
+  }, [result]);
 
   const onSubmit = async () => {
     startTransition(async () => {
