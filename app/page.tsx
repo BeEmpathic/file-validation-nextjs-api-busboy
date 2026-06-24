@@ -15,6 +15,7 @@ const Page = () => {
   // - Make so the files are rejected before clicking the upload button
   // - fix mp4 files upload, maybe you turned off the server and then tried to youload so this is why it crashed
   // - Make so the files start to upload instanly after you add them
+  // - Maybe make so the design isn't that big, the files are kind of big and there is a lot of scrolling there maybe make them smaller, or fuck it's good for the phones
 
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
   // - disable the submit button if the files doesn't pass the validation
@@ -51,10 +52,8 @@ const Page = () => {
           ...prevState,
           rejectedFiles: [...prevState.rejectedFiles, validation],
           error: "File didn't pass validation!",
+          result: false,
         }));
-        result.rejectedFiles.push(validation);
-        result.error = "File didn't pass validation!";
-        result.pass = false;
       }
     });
   }, [files]);
