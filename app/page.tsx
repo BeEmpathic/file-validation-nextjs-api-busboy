@@ -10,6 +10,9 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
+  // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
+  // - I guess learn the Set object in javascript
+  // - Fix setting state in foreach loops very important fix !!!!
   // - Make so it auto deleteds / filters the file which didn't pass the validation
   // - Past the result and setResult to the file-upload-frontend.ts it should make it more smooth
   // - Make so the files are rejected before clicking the upload button
@@ -39,6 +42,7 @@ const Page = () => {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    const LocalRejectedFiles = [];
     setResult(initialResult);
     if (!files || files.length === 0) {
       return;
@@ -47,15 +51,16 @@ const Page = () => {
       const validation = checkFile(file);
       if (validation === true) {
         return;
-      } else {
-        setResult((prevState) => ({
-          ...prevState,
-          rejectedFiles: [...prevState.rejectedFiles, validation],
-          error: "File didn't pass validation!",
-          result: false,
-        }));
       }
+      LocalRejectedFiles.push(validation);
     });
+
+    setResult((prevState) => ({
+      ...prevState,
+      rejectedFiles: [...prevState.rejectedFiles, validation],
+      error: "File didn't pass validation!",
+      result: false,
+    }));
   }, [files]);
 
   useEffect(() => {
@@ -74,7 +79,7 @@ const Page = () => {
         ),
       };
     });
-  }, [result]);
+  });
 
   const onSubmit = async () => {
     startTransition(async () => {
