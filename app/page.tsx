@@ -42,7 +42,7 @@ const Page = () => {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    const LocalRejectedFiles = [];
+    const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
     setResult(initialResult);
     if (!files || files.length === 0) {
       return;
@@ -52,12 +52,17 @@ const Page = () => {
       if (validation === true) {
         return;
       }
-      LocalRejectedFiles.push(validation);
+      localRejectedFiles.push(validation);
     });
+
+    if (localRejectedFiles.length === 0) {
+      return;
+      // make it so it does set the pass flag in the result to true and check why you even put such a flag there xD
+    }
 
     setResult((prevState) => ({
       ...prevState,
-      rejectedFiles: [...prevState.rejectedFiles, validation],
+      rejectedFiles: [...prevState.rejectedFiles, ...localRejectedFiles],
       error: "File didn't pass validation!",
       result: false,
     }));
