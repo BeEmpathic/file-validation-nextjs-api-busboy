@@ -43,7 +43,7 @@ const Page = () => {
 
   useEffect(() => {
     const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
-    setResult(initialResult);
+
     if (!files || files.length === 0) {
       return;
     }
@@ -66,25 +66,17 @@ const Page = () => {
       error: "File didn't pass validation!",
       result: false,
     }));
-  }, [files]);
 
-  useEffect(() => {
-    if (!files || files.length === 0) {
-      return;
-    }
-    setFiles((prevState) => {
-      console.log("How the prevState looks like:", prevState);
-      console.log(
-        "The rejected files in the second useEffect",
-        result.rejectedFiles,
+    if (localRejectedFiles.length > 0) {
+      const rejectedFileNames = new Set(
+        localRejectedFiles.map((file) => file.fileName),
       );
-      return {
-        ...prevState.filter(
-          (file, index) => result.rejectedFiles[0].fileName !== file.name,
-        ),
-      };
-    });
-  });
+
+      setFiles((prevState) =>
+        prevState.filter((file) => !rejectedFileNames.has(file.name)),
+      );
+    }
+  }, [files]);
 
   const onSubmit = async () => {
     startTransition(async () => {
