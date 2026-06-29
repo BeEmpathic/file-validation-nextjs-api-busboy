@@ -10,12 +10,11 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
+  // - Make so depending of the settings it shows you images, mp4 etc. or all file types
   // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
-  // - I guess learn the Set object in javascript
-  // - Fix setting state in foreach loops very important fix !!!!
-  // - Make so it auto deleteds / filters the file which didn't pass the validation
+
   // - Past the result and setResult to the file-upload-frontend.ts it should make it more smooth
-  // - Make so the files are rejected before clicking the upload button
+
   // - fix mp4 files upload, maybe you turned off the server and then tried to youload so this is why it crashed
   // - Make so the files start to upload instanly after you add them
   // - Maybe make so the design isn't that big, the files are kind of big and there is a lot of scrolling there maybe make them smaller, or fuck it's good for the phones
@@ -48,6 +47,7 @@ const Page = () => {
     if (!files || files.length === 0) {
       return;
     }
+
     files.forEach((file) => {
       const validation = checkFile(file);
       if (validation === true) {

@@ -12,6 +12,9 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 // - I think you should read that code and check if you can optimize it and simpilify it
 // remember you are neverfinishing this project
 
+const ONLY_MEDIA_ALLOWED: boolean =
+  process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
+
 const DropZone = ({
   files,
   setFiles,
@@ -102,6 +105,7 @@ const DropZone = ({
             name="files"
             onChange={handleFilesChange}
             hidden
+            accept={ONLY_MEDIA_ALLOWED ? "image/*,video/*" : "/*"}
           />
           <h2>
             {draggingWindow
