@@ -6,23 +6,32 @@ import { ChangeEvent, useTransition, useState, useEffect } from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 import ScrollTopButton from "./_components/ScrollTopButton";
+import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - Make so depending of the settings it shows you images, mp4 etc. or all file types
+  // - make so it enforces the files limit on the change / useeffect instead of after upload
+
+  // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
+  // just I guess work on this app for another month xD
+
+  // - undestand how the dropzone works againg
+
+  // - learn the testing library on this project
+
+  // - maybe do so the env is an contextProivder
+
   // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
 
   // - Past the result and setResult to the file-upload-frontend.ts it should make it more smooth
 
-  // - fix mp4 files upload, maybe you turned off the server and then tried to youload so this is why it crashed
-  // - Make so the files start to upload instanly after you add them
   // - Maybe make so the design isn't that big, the files are kind of big and there is a lot of scrolling there maybe make them smaller, or fuck it's good for the phones
 
   // - You have to chunk the files good luck mate!!! Thats my main goal right now
-  // - disable the submit button if the files doesn't pass the validation
+
   // - disable the upload button if the file isn't matching the validatoin so you probably you had this good idea, the frontend validation should happen before pressing the button I guess ;-;
-  // - make so validation happens on change instead of on submit
+
   // - maybe do file types on the backend
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
 
@@ -48,6 +57,14 @@ const Page = () => {
       return;
     }
 
+    if (files.length > FILES_MAX_AMOUNT) {
+      setResult((prevState) => ({
+        ...prevState,
+        error: `Too many files! Max allowed amount is: ${FILES_MAX_AMOUNT}`,
+      }));
+      return;
+    }
+
     files.forEach((file) => {
       const validation = checkFile(file);
       if (validation === true) {
@@ -63,7 +80,7 @@ const Page = () => {
       return;
       // make it so it does set the pass flag in the result to true and check why you even put such a flag there xD
     }
-    console.log(localRejectedFiles);
+
     setResult((prevState) => ({
       ...prevState,
       rejectedFiles: localRejectedFiles,
