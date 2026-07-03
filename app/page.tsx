@@ -11,12 +11,10 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - make so it enforces the files limit on the change / useeffect instead of after upload
-
   // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
   // just I guess work on this app for another month xD
 
-  // - undestand how the dropzone works againg
+  // - undestand how the dropzone works againg, done but you didn't do any modifcations cause it looks good
 
   // - learn the testing library on this project
 

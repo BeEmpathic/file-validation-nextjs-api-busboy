@@ -1,15 +1,10 @@
 "use client";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
-// variables for the limits from env processed
-const FILES_MAX_AMOUNT: number = process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT
-  ? parseInt(process.env.NEXT_PUBLIC_FILES_MAX_AMOUNT, 10)
-  : 10;
-const FILE_MAX_SIZE = process.env.NEXT_PUBLIC_FILE_MAX_SIZE
-  ? parseInt(process.env.NEXT_PUBLIC_FILE_MAX_SIZE) * 1024 * 1024
-  : 5 * 1024 * 1024; // in MB
-
-const ONLY_MEDIA_ALLOWED: boolean =
-  process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
+import {
+  FILES_MAX_AMOUNT,
+  FILE_MAX_SIZE,
+  ONLY_MEDIA_ALLOWED,
+} from "@/_lib/file-upload/config";
 
 export const checkFile = (
   file: File,
