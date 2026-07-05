@@ -3,9 +3,9 @@ import { fileUpload, checkFile } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { ChangeEvent, useTransition, useState, useEffect } from "react";
-import DisplayResult from "./_components/DisplayResult";
-import DropZone from "./_components/_dropzone/DropZone";
-import ScrollTopButton from "./_components/ScrollTopButton";
+import DisplayResult from "@/app/_components/DisplayResult";
+import DropZone from "@/app/_components/_dropzone/DropZone";
+import ScrollTopButton from "@/app/_components/ScrollTopButton";
 import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 
 const Page = () => {
