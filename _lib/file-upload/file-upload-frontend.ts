@@ -95,11 +95,12 @@ export async function fileUpload(files: File[]) {
   const uploadResults = await Promise.all(uploadPromises);
 
   for (const item of uploadResults) {
-    if (item.success && item.backendData) {
+    if (item.success) {
       const data = item.backendData;
       result.message = data.message;
       result.status = data.status;
-
+      result.pass = true;
+      console.log("Result in the for loop", result);
       if (data.uploadedFilesNames && data.uploadedFilesNames[0]) {
         result.uploadedFilesNames.push(data.uploadedFilesNames[0]);
       }
