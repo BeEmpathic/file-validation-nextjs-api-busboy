@@ -54,7 +54,7 @@ export async function fileUpload(files: File[]) {
     return result;
   }
 
-  const uploadPrimises = files.map(async (file) => {
+  const uploadPromises = files.map(async (file) => {
     const validation = checkFile(file);
 
     if (validation !== true) {
@@ -85,63 +85,38 @@ export async function fileUpload(files: File[]) {
         result.status = backendData.status;
       }
 
-      return result;
+      return backendData;
     } catch (error: any) {
-      return error;
+      console.error("error happened: ", error);
+      return result;
     }
   });
 
-  for (const file of files) {
-    try {
-      const validation = checkFile(file);
-      if (validation === true) {
-      } else {
-        result.rejectedFiles.push(validation);
-        result.error = "File didn't pass validation!";
-        result.pass = false;
+  const uploadResults = await Promise.all(uploadPromises);
+
+  for (const item of uploadResults) {
+    if (item.success && item.backendData) {
+      const data = item.backendData;
+      result.message = data.message;
+      result.status = data.status;
+
+      if (data.uploadedFilesNames && data.uploadedFilesNames[0]) {
+        result.uploadedFilesNames.push(data.uploadedFilesNames[0]);
       }
-      const formData = new FormData();
-      formData.append("file", file);
+    } else {
+      result.message = item.message;
+      result.status = item.status;
+      result.error = item.error;
 
-      const response = await fetch("/api/file-upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        return result;
+      if (item.rejectedFile) {
+        result.rejectedFiles.push(item.rejectedFile);
       }
-      const backendData = await response.json();
-      if (backendData.error) {
-        result.message = backendData.message;
-        result.pass = backendData.pass;
-        result.error = backendData.error;
-        result.status = backendData.status;
-      }
-
-      result.message = backendData.message;
-      result.pass = backendData.pass;
-      result.status = backendData.status;
-
-      result.uploadedFilesNames.push(backendData.uploadedFilesNames[0]);
-      result.rejectedFiles.push(backendData.rejectedFiles);
-    } catch (e: any) {
-      console.error("error happened: ", e);
-
-      result.error =
-        "Something went wrong! We got unusual error. Probably server";
-
-      result.pass = false;
-      return result;
     }
   }
 
+  console.log("the result at the end", result);
   if (!result.pass) {
-    console.log("the result.pass wasn't true");
-    return result;
+    return Promise.reject(result);
   }
-
-  // there is type of any on error check if you can do something about it.
-
   return result;
 }
