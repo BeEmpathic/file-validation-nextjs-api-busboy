@@ -93,16 +93,17 @@ export async function fileUpload(files: File[]) {
   });
 
   const uploadResults = await Promise.all(uploadPromises);
+  console.log("uploadResults", uploadResults);
 
   for (const item of uploadResults) {
-    if (item.success) {
-      const data = item.backendData;
-      result.message = data.message;
-      result.status = data.status;
+    if (item.status === 201) {
+      result.message = item.message;
+      result.status = item.status;
       result.pass = true;
       console.log("Result in the for loop", result);
-      if (data.uploadedFilesNames && data.uploadedFilesNames[0]) {
-        result.uploadedFilesNames.push(data.uploadedFilesNames[0]);
+      console.log("WHERE IS THIS CONSOLE LOG?");
+      if (item.uploadedFilesNames && item.uploadedFilesNames[0]) {
+        result.uploadedFilesNames.push(item.uploadedFilesNames[0]);
       }
     } else {
       result.message = item.message;

@@ -14,11 +14,11 @@ const Page = () => {
   // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
   // just I guess work on this app for another month xD
 
+  // - when there is an error with the file it doesn't clear the successfully uploaded files and I'm not sure if that's bad or good
+
   // - Delete the rest of the user's files name at save
 
   // - undestand how the dropzone works againg, done but you didn't do any modifcations cause it looks good
-
-  // - learn the testing library on this project
 
   // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
 
@@ -102,6 +102,7 @@ const Page = () => {
       try {
         // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
         const response = await fileUpload(files);
+        console.log("What is in the respone:", response);
         setResult((prevState) => ({
           ...prevState,
           message: response.message,
@@ -114,6 +115,7 @@ const Page = () => {
           error: response.error,
         }));
       } catch (err: any) {
+        console.log("Did you error?", console.log(err));
         if (err && err.error) {
           setResult((prevState) => ({
             ...prevState,
@@ -125,6 +127,7 @@ const Page = () => {
         }
       }
 
+      console.log("result after the error", result);
       setFiles([]);
     });
   };
