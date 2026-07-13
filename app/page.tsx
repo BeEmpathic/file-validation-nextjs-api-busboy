@@ -2,7 +2,13 @@
 import { fileUpload, checkFile } from "@/_lib/file-upload/file-upload-frontend";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
-import { ChangeEvent, useTransition, useState, useEffect } from "react";
+import {
+  ChangeEvent,
+  useTransition,
+  useState,
+  useEffect,
+  useActionState,
+} from "react";
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 import ScrollTopButton from "./_components/ScrollTopButton";
@@ -11,14 +17,16 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
+  // - rework the useEffects
+
+  // - rework the useTranstion to be useActionState and see what's gonna happen
+
   // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
   // just I guess work on this app for another month xD
 
   // - when there is an error with the file it doesn't clear the successfully uploaded files and I'm not sure if that's bad or good
 
   // - Delete the rest of the user's files name at save
-
-  // - undestand how the dropzone works againg, done but you didn't do any modifcations cause it looks good
 
   // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
 
@@ -29,6 +37,8 @@ const Page = () => {
   // - You have to chunk the files good luck mate!!! That's some next level type shit to do
 
   // - maybe do file types on the backend
+  // sooo yeah just found a bug before even getting to use this and now we are reworking this shit again so yeah here I go again endless project remember
+  // I'm suppose to never stop developing this I guess
   // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
 
   const initialResult: returnedInfoType = {
