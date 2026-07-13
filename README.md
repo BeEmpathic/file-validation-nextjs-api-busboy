@@ -49,7 +49,8 @@ And the cap makes it probably useless for me anyway xD, cause I think that like 
 <img width="699" height="1019" alt="image" src="https://github.com/user-attachments/assets/57339272-3dfe-407b-a8a0-fd5e1065708b" />
 
 ## explanation
-For now I think the project is kind of done. I did all I needed in it for now. 
-I want to use it in my other project for now and see if it's enough. 
-Still didn't do the chunking, but I did so all files are sent and once which should improve the performence, there are still some issues with that tho, chunking would be the best. 
+
+For now I think the project is kind of done. I did all I needed in it for now.
+I want to use it in my other project for now and see if it's enough.
+Still didn't do the chunking, but I did so all files are sent at once which should improve the performence, there are still some issues with that tho, chunking would be the best.
 So let's see this project in the future.
