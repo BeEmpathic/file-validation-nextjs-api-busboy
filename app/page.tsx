@@ -17,7 +17,7 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - rework the useEffects
+  // - rework the useEffects instead of making the dropzone save the files make so the dropzone returns files to you and then deal with them <3
 
   // - rework the useTranstion to be useActionState and see what's gonna happen
 
@@ -52,8 +52,7 @@ const Page = () => {
 
   const [result, setResult] = useState(initialResult);
   const [files, setFiles] = useState<File[]>([]);
-
-  const [isPending, startTransition] = useTransition();
+  const [startTransition] = useTransition();
 
   // validation before the files are uploaded
   useEffect(() => {
@@ -106,46 +105,49 @@ const Page = () => {
   }, [files]);
 
   const onSubmit = async () => {
-    startTransition(async () => {
-      setResult(initialResult);
+    setResult(initialResult);
 
-      try {
-        // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
-        const response = await fileUpload(files);
-        console.log("What is in the respone:", response);
+    try {
+      // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
+      const response = await fileUpload(files);
+      console.log("What is in the respone:", response);
+      setResult((prevState) => ({
+        ...prevState,
+        message: response.message,
+        status: response.status,
+        uploadedFilesNames: [
+          ...prevState.uploadedFilesNames,
+          ...response.uploadedFilesNames,
+        ],
+        rejectedFiles: response.rejectedFiles,
+        error: response.error,
+      }));
+    } catch (err: any) {
+      console.log("Did you error?", console.log(err));
+      if (err && err.error) {
         setResult((prevState) => ({
           ...prevState,
-          message: response.message,
-          status: response.status,
-          uploadedFilesNames: [
-            ...prevState.uploadedFilesNames,
-            ...response.uploadedFilesNames,
-          ],
-          rejectedFiles: response.rejectedFiles,
-          error: response.error,
+          message: err.message,
+          status: err.status,
+          rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
+          error: err.error,
         }));
-      } catch (err: any) {
-        console.log("Did you error?", console.log(err));
-        if (err && err.error) {
-          setResult((prevState) => ({
-            ...prevState,
-            message: err.message,
-            status: err.status,
-            rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
-            error: err.error,
-          }));
-        }
       }
+    }
 
-      console.log("result after the error", result);
-      setFiles([]);
-    });
+    console.log("result after the error", result);
+    setFiles([]);
   };
+
+  const [ServerResult, formAction, isPending] = useActionState(
+    onSubmit,
+    initialResult,
+  );
 
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
-        <form action={onSubmit} className="text-center p-3">
+        <form action={formAction} className="text-center p-3">
           <DropZone files={files} setFiles={setFiles} />
           {/*<!-- this dropzone has an input in it */}
           <button
