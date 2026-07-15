@@ -17,6 +17,8 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
+  // - Make so the errors are cleared with every upload of the files
+
   // - rework the useEffects instead of making the dropzone save the files make so the dropzone returns files to you and then deal with them <3
 
   // - rework the useTranstion to be useActionState and see what's gonna happen
@@ -78,9 +80,11 @@ const Page = () => {
       localRejectedFiles.push(validation);
     });
 
+    // this doesn't work cause I need to rework the entire fucking useEffect omg xD These to things are so huge
     if (localRejectedFiles.length === 0) {
       setResult((prevState) => ({
         ...prevState,
+        rejectedFiles: [],
       }));
       return;
       // make it so it does set the pass flag in the result to true and check why you even put such a flag there xD
@@ -135,14 +139,15 @@ const Page = () => {
       }
     }
 
-    console.log("result after the error", result);
     setFiles([]);
   };
 
-  const [ServerResult, formAction, isPending] = useActionState(
+  const [serverResult, formAction, isPending] = useActionState(
     onSubmit,
     initialResult,
   );
+
+  console.log("What the hell is server result?", serverResult);
 
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">

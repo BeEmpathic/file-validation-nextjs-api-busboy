@@ -17,7 +17,6 @@ export const checkFile = (
       reason: string;
     }
   | true => {
-  console.log("The size of the file", file.size);
   if (file.size > fileSizeLimit) {
     return {
       fileName: file.name,
