@@ -8,9 +8,7 @@ import {
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
 // TODOS!!!:
-// - Work on types so there is no errors
-// - I think you should read that code and check if you can optimize it and simpilify it
-// remember you are neverfinishing this project
+// - Rework the entire dropzone
 
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
@@ -76,6 +74,10 @@ const DropZone = ({
       return;
     }
     const inputFiles = Array.from(e.target.files);
+    console.log(
+      "Is my code shit does it delete the files from the input?",
+      e.target.files,
+    );
     setFiles((prev) => [...prev, ...inputFiles]);
   };
 
