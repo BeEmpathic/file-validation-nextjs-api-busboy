@@ -4,6 +4,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
+  useRef,
 } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 
@@ -13,16 +14,23 @@ import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-const DropZone = ({
-  files,
-  setFiles,
-}: {
-  files: File[];
-  setFiles: Dispatch<SetStateAction<File[]>>;
-}) => {
+const DropZone = () => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
+  const [files, setFiles] = useState([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const syncFilesInput = (newFiles: Array<File>) => {
+    if (!fileInputRef.current) return;
+
+    const dataTransfer = new DataTransfer();
+
+    newFiles.forEach((file) => dataTransfer.items.add(file));
+
+    fileInputRef.current.files = dataTransfer.files;
+  };
 
   useEffect(() => {
     const handleWindowDragEnter = (e: DragEvent) => {
@@ -74,10 +82,7 @@ const DropZone = ({
       return;
     }
     const inputFiles = Array.from(e.target.files);
-    console.log(
-      "Is my code shit does it delete the files from the input?",
-      e.target.files,
-    );
+
     setFiles((prev) => [...prev, ...inputFiles]);
   };
 
@@ -102,6 +107,7 @@ const DropZone = ({
           onDrop={(e) => handleDrop(e)}
         >
           <input
+            ref={fileInputRef}
             type="file"
             multiple
             name="files"
