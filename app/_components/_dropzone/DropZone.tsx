@@ -22,14 +22,17 @@ const DropZone = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const syncFilesInput = (newFiles: Array<File>) => {
+  // this function is responsible for saving the files to the input
+  const syncAndValidateFilesInput = (newFiles: Array<File>) => {
     if (!fileInputRef.current) return;
+    if (!newFiles || newFiles.length === 0) return;
 
     const dataTransfer = new DataTransfer();
 
     newFiles.forEach((file) => dataTransfer.items.add(file));
 
     fileInputRef.current.files = dataTransfer.files;
+    setFiles((prev) => [...prev, ...newFiles]);
   };
 
   useEffect(() => {
@@ -83,7 +86,8 @@ const DropZone = () => {
     }
     const inputFiles = Array.from(e.target.files);
 
-    setFiles((prev) => [...prev, ...inputFiles]);
+    syncAndValidateFilesInput(inputFiles);
+    console.log("The input: ", fileInputRef.current);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -92,9 +96,10 @@ const DropZone = () => {
     setDraggingWindow(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
-    setFiles((prev) => [...prev, ...droppedFiles]);
+    syncAndValidateFilesInput(droppedFiles);
 
     console.log("The dropped files: ", droppedFiles);
+    console.log("The input: ", fileInputRef);
   };
 
   return (

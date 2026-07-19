@@ -147,8 +147,8 @@ const Page = () => {
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
         <form action={formAction} className="text-center p-3">
-          <DropZone files={files} setFiles={setFiles} />
-          {/*<!-- this dropzone has an input in it */}
+          <DropZone />{" "}
+          {/* drop zone is an input now make it work ahahahahahah */}
           <button
             disabled={isPending}
             className="cursor-pointer text-black bg-white p-2 m-2 rounded-full hover:bg-gray-300 hover:text-white"
