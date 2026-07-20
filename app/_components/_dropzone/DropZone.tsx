@@ -12,7 +12,7 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 
 // TODOS!!!:
 // - Rework the entire dropzone
-// - the preview doesn't work
+// - Fix so when you add forbidden file it doesn't delete all the files which are there
 // - Everytime to set files they aren't added to the input they are overwritten in the input
 
 const ONLY_MEDIA_ALLOWED: boolean =
@@ -76,10 +76,11 @@ const DropZone = ({
       const rejectedFileNames = new Set(
         localRejectedFiles.map((file) => file.fileName),
       );
-
-      setFiles((prevState) =>
-        prevState.filter((file) => !rejectedFileNames.has(file.name)),
+      // fix it so when you add a bad file it doesn't overwrittens the already added files
+      setFiles((prev) =>
+        newFiles.filter((file) => !rejectedFileNames.has(file.name)),
       );
+      console.log("Files if there were not correct file:", files);
       return false;
     }
   };
