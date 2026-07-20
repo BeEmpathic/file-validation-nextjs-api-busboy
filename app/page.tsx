@@ -58,50 +58,6 @@ const Page = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [startTransition] = useTransition();
 
-  // validation before the files are uploaded
-  useEffect(() => {
-    const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
-
-    if (!files || files.length === 0) {
-      return;
-    }
-
-    if (files.length > FILES_MAX_AMOUNT) {
-      setResult((prevState) => ({
-        ...prevState,
-        error: `Too many files! Max allowed amount is: ${FILES_MAX_AMOUNT}`,
-      }));
-      return;
-    }
-
-    files.forEach((file) => {
-      const validation = checkFile(file);
-      if (validation === true) {
-        return;
-      }
-      localRejectedFiles.push(validation);
-    });
-
-    // this doesn't work cause I need to rework the entire fucking useEffect omg xD These to things are so huge
-
-    setResult((prevState) => ({
-      ...prevState,
-      rejectedFiles: localRejectedFiles,
-      error: "File didn't pass validation!",
-      pass: false,
-    }));
-
-    if (localRejectedFiles.length > 0) {
-      const rejectedFileNames = new Set(
-        localRejectedFiles.map((file) => file.fileName),
-      );
-
-      setFiles((prevState) =>
-        prevState.filter((file) => !rejectedFileNames.has(file.name)),
-      );
-    }
-  }, [files]);
-
   const onSubmit = async () => {
     setResult(initialResult);
 
@@ -147,7 +103,12 @@ const Page = () => {
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
         <form action={formAction} className="text-center p-3">
-          <DropZone />{" "}
+          <DropZone
+            result={result}
+            setResult={setResult}
+            files={files}
+            setFiles={setFiles}
+          />
           {/* drop zone is an input now make it work ahahahahahah */}
           <button
             disabled={isPending}

@@ -7,25 +7,92 @@ import {
   useRef,
 } from "react";
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
+import { checkFile } from "@/_lib/file-upload/file-upload-frontend";
+import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 
 // TODOS!!!:
 // - Rework the entire dropzone
+// - the preview doesn't work
+// - Everytime to set files they aren't added to the input they are overwritten in the input
 
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
 
-const DropZone = () => {
+const DropZone = ({
+  result,
+  setResult,
+  files,
+  setFiles,
+}: {
+  result: Array<{}>;
+  setResult: void;
+}) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
-  const [files, setFiles] = useState([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const checkFilesLocal = (newFiles: Array<File>) => {
+    const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
+
+    if (!newFiles || newFiles.length === 0) {
+      setResult((prevState) => {
+        return {
+          ...prevState,
+          error: "No files selected!",
+          pass: false,
+        };
+      });
+      return false;
+    }
+
+    if (newFiles.length > FILES_MAX_AMOUNT) {
+      setResult((prevState) => ({
+        ...prevState,
+        error: `Too many files! Max allowed amount is: ${FILES_MAX_AMOUNT}`,
+      }));
+      return false;
+    }
+
+    newFiles.forEach((file) => {
+      const validation = checkFile(file);
+      if (validation === true) {
+        return true;
+      }
+      localRejectedFiles.push(validation);
+    });
+
+    if (localRejectedFiles.length === 0) return true;
+
+    setResult((prevState) => ({
+      ...prevState,
+      rejectedFiles: localRejectedFiles,
+      error: "File didn't pass validation!",
+      pass: false,
+    }));
+
+    if (localRejectedFiles.length > 0) {
+      const rejectedFileNames = new Set(
+        localRejectedFiles.map((file) => file.fileName),
+      );
+
+      setFiles((prevState) =>
+        prevState.filter((file) => !rejectedFileNames.has(file.name)),
+      );
+      return false;
+    }
+  };
 
   // this function is responsible for saving the files to the input
   const syncAndValidateFilesInput = (newFiles: Array<File>) => {
     if (!fileInputRef.current) return;
     if (!newFiles || newFiles.length === 0) return;
+
+    const resultOfChecking = checkFilesLocal(newFiles);
+    if (resultOfChecking !== true) {
+      return;
+    }
 
     const dataTransfer = new DataTransfer();
 
