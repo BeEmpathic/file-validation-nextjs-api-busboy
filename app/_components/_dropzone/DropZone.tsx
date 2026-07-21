@@ -77,9 +77,10 @@ const DropZone = ({
         localRejectedFiles.map((file) => file.fileName),
       );
       // fix it so when you add a bad file it doesn't overwrittens the already added files
-      setFiles((prev) =>
-        newFiles.filter((file) => !rejectedFileNames.has(file.name)),
-      );
+      console.log("Files before they get fithered out", files);
+      newFiles = newFiles.filter((file) => !rejectedFileNames.has(file.name));
+      if (newFiles.length === 0) return false;
+      setFiles((prev) => [...prev, ...newFiles]);
       console.log("Files if there were not correct file:", files);
       return false;
     }
