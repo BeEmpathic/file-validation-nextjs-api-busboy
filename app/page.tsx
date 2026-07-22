@@ -12,7 +12,6 @@ import {
 import DisplayResult from "./_components/DisplayResult";
 import DropZone from "./_components/_dropzone/DropZone";
 import ScrollTopButton from "./_components/ScrollTopButton";
-import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
@@ -81,7 +80,6 @@ const Page = () => {
         error: response.error,
       }));
     } catch (err: any) {
-      console.log("Did you error?", console.log(err));
       if (err && err.error) {
         setResult((prevState) => ({
           ...prevState,

@@ -24,7 +24,7 @@ const DropZone = ({
   files,
   setFiles,
 }: {
-  result: Array<{}>;
+  result: returnedInfoType;
   setResult: React.Dispatch<SetStateAction<returnedInfoType>>;
   files: Array<File>;
   setFiles: React.Dispatch<SetStateAction<Array<File>>>;
