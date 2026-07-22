@@ -17,7 +17,11 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - rework the entire dropzone it's dogshit
+  // - Fix typescript errors
+
+  // - Check if the returnedInfoTyep which could be called the fileuploadresult is used where it's supposed to be used
+
+  // - Learn more about useActionState cause I don't think you are using it's potential
 
   // - Make so the errors are cleared with every upload of the files
 

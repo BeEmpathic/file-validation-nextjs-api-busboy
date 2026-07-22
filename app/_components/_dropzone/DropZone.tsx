@@ -9,11 +9,11 @@ import {
 import { DropzonePreviewCard } from "./DropZoneFilesPreview";
 import { checkFile } from "@/_lib/file-upload/file-upload-frontend";
 import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
+import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 // TODOS!!!:
 // - Rework the entire dropzone
-// - Fix so when you add forbidden file it doesn't delete all the files which are there
-// - Everytime to set files they aren't added to the input they are overwritten in the input
+// - Fix the typescript errors
 
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
@@ -25,7 +25,7 @@ const DropZone = ({
   setFiles,
 }: {
   result: Array<{}>;
-  setResult: void;
+  setResult: React.Dispatch<SetStateAction<returnedInfoType>>;
 }) => {
   const [dragging, setDragging] = useState(false);
   const [draggingWindow, setDraggingWindow] = useState(false);
@@ -37,7 +37,7 @@ const DropZone = ({
     const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
 
     if (!newFiles || newFiles.length === 0) {
-      setResult((prevState) => {
+      setResult((prevState: returnedInfoType) => {
         return {
           ...prevState,
           error: "No files selected!",
@@ -80,7 +80,7 @@ const DropZone = ({
       console.log("Files before they get fithered out", files);
       newFiles = newFiles.filter((file) => !rejectedFileNames.has(file.name));
       if (newFiles.length === 0) return false;
-      setFiles((prev) => [...prev, ...newFiles]);
+      setFiles((prev: Array<File>) => [...prev, ...newFiles]);
       console.log("Files if there were not correct file:", files);
       return false;
     }
