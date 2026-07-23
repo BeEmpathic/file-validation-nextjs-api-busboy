@@ -12,8 +12,7 @@ import { FILES_MAX_AMOUNT } from "@/_lib/file-upload/config";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 // TODOS!!!:
-// - Rework the entire dropzone
-// - Fix the typescript errors
+// for now there is no todos here sheesh
 
 const ONLY_MEDIA_ALLOWED: boolean =
   process.env.NEXT_PUBLIC_ONLY_MEDIA_ALLOWED === "true" || false;
@@ -78,12 +77,11 @@ const DropZone = ({
       const rejectedFileNames = new Set(
         localRejectedFiles.map((file) => file.fileName),
       );
-      // fix it so when you add a bad file it doesn't overwrittens the already added files
-      console.log("Files before they get fithered out", files);
+
       newFiles = newFiles.filter((file) => !rejectedFileNames.has(file.name));
       if (newFiles.length === 0) return false;
       setFiles((prev: Array<File>) => [...prev, ...newFiles]);
-      console.log("Files if there were not correct file:", files);
+
       return false;
     }
   };
@@ -158,7 +156,6 @@ const DropZone = ({
     const inputFiles = Array.from(e.target.files);
 
     syncAndValidateFilesInput(inputFiles);
-    console.log("The input: ", fileInputRef.current);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -168,9 +165,6 @@ const DropZone = ({
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     syncAndValidateFilesInput(droppedFiles);
-
-    console.log("The dropped files: ", droppedFiles);
-    console.log("The input: ", fileInputRef);
   };
 
   return (

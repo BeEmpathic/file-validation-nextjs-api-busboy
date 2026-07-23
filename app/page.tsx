@@ -16,7 +16,8 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
-  // - Fix typescript errors
+  // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
+  // just I guess work on this app for another month xD
 
   // - Check if the returnedInfoTyep which could be called the fileuploadresult is used where it's supposed to be used
 
@@ -24,12 +25,7 @@ const Page = () => {
 
   // - Make so the errors are cleared with every upload of the files
 
-  // - rework the useEffects instead of making the dropzone save the files make so the dropzone returns files to you and then deal with them <3
-
   // - rework the useTranstion to be useActionState and see what's gonna happen
-
-  // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
-  // just I guess work on this app for another month xD
 
   // - when there is an error with the file it doesn't clear the successfully uploaded files and I'm not sure if that's bad or good
 
