@@ -59,6 +59,7 @@ const Page = () => {
 
   const onSubmit = async () => {
     setResult(initialResult);
+    console.log("Result after the initial result?", result);
 
     try {
       // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
@@ -75,6 +76,8 @@ const Page = () => {
         rejectedFiles: response.rejectedFiles,
         error: response.error,
       }));
+      setFiles([]);
+      return response;
     } catch (err: any) {
       if (err && err.error) {
         setResult((prevState) => ({
@@ -84,10 +87,10 @@ const Page = () => {
           rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
           error: err.error,
         }));
+        setFiles([]);
+        return err;
       }
     }
-
-    setFiles([]);
   };
 
   const [serverResult, formAction, isPending] = useActionState(
