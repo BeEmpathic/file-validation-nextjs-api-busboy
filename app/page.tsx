@@ -16,6 +16,10 @@ import ScrollTopButton from "./_components/ScrollTopButton";
 const Page = () => {
   // ENDLESS TODOS LIST!!!!!!!!!!!!:
 
+  // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
+
+  // - Delete the rest of the user's files name at save
+
   // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
   // just I guess work on this app for another month xD
 
@@ -23,13 +27,7 @@ const Page = () => {
 
   //  Use action state is not good here, cause it requires you to manage the result only on submit
 
-  // - Delete the rest of the user's files name at save
-
-  // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
-
   // - Past the result and setResult to the file-upload-frontend.ts it should make it more smooth
-
-  // - Maybe make so the design isn't that big, the files are kind of big and there is a lot of scrolling there maybe make them smaller, or fuck it's good for the phones
 
   // - You have to chunk the files good luck mate!!! That's some next level type shit to do
 

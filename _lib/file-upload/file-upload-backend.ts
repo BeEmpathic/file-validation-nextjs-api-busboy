@@ -84,7 +84,7 @@ export async function busboyFilesHandler(
         "public",
         "uploads",
         "images",
-        `${v4()}-${info.filename}`,
+        `${v4()}`,
       );
 
       uploadedFilesPaths.push(saveTo);
