@@ -35,6 +35,15 @@ const DropZone = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const checkFilesLocal = (newFiles: Array<File>) => {
+    setResult((prevState) => {
+      return {
+        ...prevState,
+        uploadedFilesNames: [],
+        rejectedFiles: [],
+        error: "",
+        pass: true,
+      };
+    });
     const localRejectedFiles: Array<{ fileName: string; reason: string }> = [];
 
     if (!newFiles || newFiles.length === 0) {
