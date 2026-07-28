@@ -21,13 +21,7 @@ const Page = () => {
 
   // - Check if the returnedInfoTyep which could be called the fileuploadresult is used where it's supposed to be used
 
-  // - Learn more about useActionState cause I don't think you are using it's potential
-
-  // - Make so the errors are cleared with every upload of the files
-
-  // - rework the useTranstion to be useActionState and see what's gonna happen
-
-  // - when there is an error with the file it doesn't clear the successfully uploaded files and I'm not sure if that's bad or good
+  //  Use action state is not good here, cause it requires you to manage the result only on submit
 
   // - Delete the rest of the user's files name at save
 
@@ -60,12 +54,10 @@ const Page = () => {
   const onSubmit = async () => {
     startTransition(async () => {
       setResult(initialResult);
-      console.log("Result after the initial result?", result);
 
       try {
         // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
         const response = await fileUpload(files);
-        console.log("What is in the respone:", response);
         setResult((prevState) => ({
           ...prevState,
           message: response.message,
