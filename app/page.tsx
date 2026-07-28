@@ -55,55 +55,50 @@ const Page = () => {
 
   const [result, setResult] = useState(initialResult);
   const [files, setFiles] = useState<File[]>([]);
-  const [startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = async () => {
-    setResult(initialResult);
-    console.log("Result after the initial result?", result);
+    startTransition(async () => {
+      setResult(initialResult);
+      console.log("Result after the initial result?", result);
 
-    try {
-      // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
-      const response = await fileUpload(files);
-      console.log("What is in the respone:", response);
-      setResult((prevState) => ({
-        ...prevState,
-        message: response.message,
-        status: response.status,
-        uploadedFilesNames: [
-          ...prevState.uploadedFilesNames,
-          ...response.uploadedFilesNames,
-        ],
-        rejectedFiles: response.rejectedFiles,
-        error: response.error,
-      }));
-      setFiles([]);
-      return response;
-    } catch (err: any) {
-      if (err && err.error) {
+      try {
+        // rise your knowledge about promises in javascript, cause you need to use promise all here to get the correct result or something
+        const response = await fileUpload(files);
+        console.log("What is in the respone:", response);
         setResult((prevState) => ({
           ...prevState,
-          message: err.message,
-          status: err.status,
-          rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
-          error: err.error,
+          message: response.message,
+          status: response.status,
+          uploadedFilesNames: [
+            ...prevState.uploadedFilesNames,
+            ...response.uploadedFilesNames,
+          ],
+          rejectedFiles: response.rejectedFiles,
+          error: response.error,
         }));
         setFiles([]);
-        return err;
+        return;
+      } catch (err: any) {
+        if (err && err.error) {
+          setResult((prevState) => ({
+            ...prevState,
+            message: err.message,
+            status: err.status,
+            rejectedFiles: [...prevState.rejectedFiles, ...err.rejectedFiles],
+            error: err.error,
+          }));
+          setFiles([]);
+          return;
+        }
       }
-    }
+    });
   };
-
-  const [serverResult, formAction, isPending] = useActionState(
-    onSubmit,
-    initialResult,
-  );
-
-  console.log("What the hell is server result?", serverResult);
 
   return (
     <div className="font-meri bg-[#1A1953] flex min-h-dvh flex justify-center items-center p-8">
       <div className="bg-[#2F2FE4] w-full rounded-lg file-upload-form flex flex-col p-8 max-w-2xl content-center">
-        <form action={formAction} className="text-center p-3">
+        <form action={onSubmit} className="text-center p-3">
           <DropZone
             result={result}
             setResult={setResult}
