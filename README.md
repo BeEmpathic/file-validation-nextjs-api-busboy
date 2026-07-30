@@ -50,7 +50,4 @@ And the cap makes it probably useless for me anyway xD, cause I think that like 
 
 ## explanation
 
-For now I think the project is kind of done. I did all I needed in it for now.
-I want to use it in my other project for now and see if it's enough.
-Still didn't do the chunking, but I did so all files are sent at once which should improve the performence, there are still some issues with that tho, chunking would be the best.
-So let's see this project in the future.
+I reworked a lot still didn't implement the chunking, but I improved the upload using the browser's queue system for the files. Should be enough. For now I will try to do couple of other projects. I had the app upload 20GB files it worked well I don't think that you should do such a huge uploads often cause the disk space at rented servers is expensive. 
