@@ -30,10 +30,8 @@ const Page = () => {
   // - You have to chunk the files good luck mate!!! That's some next level type shit to do
 
   // - maybe do file types on the backend
-  // sooo yeah just found a bug before even getting to use this and now we are reworking this shit again so yeah here I go again endless project remember
-  // I'm suppose to never stop developing this I guess
-  // why I'm adding todos instead of deleting them ;-; (Good question ;-;, but you deleted some from other files :) )
 
+  // there might be a bug in it hopefully I already fixed it and forgot to push it to github
   const initialResult: returnedInfoType = {
     pass: false,
     message: "Your files's feedback will be here!",
