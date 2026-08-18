@@ -18,8 +18,6 @@ const Page = () => {
 
   // - Add UUID to your files cause that will help with everything related to them in the frontend (That means rebulding entire app ;-;)
 
-  // - Delete the rest of the user's files name at save
-
   // - clean the code a bit in the main page I think you can move the onChange function th the file-upload-frontend.ts something like this
   // just I guess work on this app for another month xD
 
