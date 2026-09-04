@@ -6,6 +6,12 @@ import path from "node:path";
 import { v4 } from "uuid";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
+/*
+ENDLESS TODOS HERE AGAIN BABY:
+
+- Deal with the file types
+*/
+
 export async function headerContentLengthCheck(
   contentLength: string | null,
   MAX_TOTAL_UPLOAD = 5 * 20 * 1024 * 1024,
@@ -84,7 +90,7 @@ export async function busboyFilesHandler(
         "public",
         "uploads",
         "images",
-        `${v4()}`,
+        `${v4()}${path.extname(info.filename)}`,
       );
 
       uploadedFilesPaths.push(saveTo);
