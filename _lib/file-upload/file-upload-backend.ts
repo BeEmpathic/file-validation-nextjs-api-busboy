@@ -1,4 +1,3 @@
-"use server";
 import busboy, { Busboy } from "busboy";
 import { Readable } from "node:stream";
 import fs, { write } from "node:fs";
