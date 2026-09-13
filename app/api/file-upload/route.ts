@@ -1,5 +1,3 @@
-"use server";
-
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 import { NextRequest } from "next/server";

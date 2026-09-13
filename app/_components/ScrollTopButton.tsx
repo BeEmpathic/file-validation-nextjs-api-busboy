@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
 

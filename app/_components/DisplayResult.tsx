@@ -1,3 +1,4 @@
+"use client";
 import { returnedInfoType } from "@/_types/fileUploadTypes";
 
 type DisplayResultProps = {
